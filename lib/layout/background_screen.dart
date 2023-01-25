@@ -15,19 +15,19 @@ class BackGroundImg {
         SizedBox(
           height: 30,
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              height: 210,
-              width: 89,
-              child: Image.asset(
-                "assets/image/splashlogo.png",
-                fit: BoxFit.fitWidth,
-              ),
-            ),
-          ],
-        ),
+        // Row(
+        //   mainAxisAlignment: MainAxisAlignment.center,
+        //   children: [
+        //     Container(
+        //       height: 210,
+        //       width: 99,
+        //       child: Image.asset(
+        //         "assets/image/splashlogo.png",
+        //         fit: BoxFit.fitWidth,
+        //       ),
+        //     ),
+        //   ],
+        // ),
       ],
     );
   }
