@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fx_project/screens/forgotpasspage.dart';
 import 'package:fx_project/screens/loginpage.dart';
 
 class ScreenRouteGenerator {
@@ -8,6 +9,8 @@ class ScreenRouteGenerator {
     switch (settings.name) {
       case '/loginpage':
         return MaterialPageRoute(builder: (_) => LoginPage());
+      case '/passwordforgotpage':
+        return MaterialPageRoute(builder: (_) => PasswordForgotPage());
       default:
         return MaterialPageRoute(builder: (_) => LoginPage());
     }

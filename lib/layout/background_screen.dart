@@ -15,19 +15,6 @@ class BackGroundImg {
         const SizedBox(
           height: 30,
         ),
-        // Row(
-        //   mainAxisAlignment: MainAxisAlignment.center,
-        //   children: [
-        //     Container(
-        //       height: 210,
-        //       width: 99,
-        //       child: Image.asset(
-        //         "assets/image/splashlogo.png",
-        //         fit: BoxFit.fitWidth,
-        //       ),
-        //     ),
-        //   ],
-        // ),
       ],
     );
   }
