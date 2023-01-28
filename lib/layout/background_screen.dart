@@ -5,14 +5,14 @@ class BackGroundImg {
     return Stack(
       children: [
         Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             image: DecorationImage(
               image: AssetImage('assets/image/background.png'),
               fit: BoxFit.fill,
             ),
           ),
         ),
-        SizedBox(
+        const SizedBox(
           height: 30,
         ),
         // Row(
