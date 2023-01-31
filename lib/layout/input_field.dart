@@ -7,7 +7,7 @@ class ReuseTextFields extends StatelessWidget {
   bool? password;
   bool autocorrect;
   TextEditingController? controller;
-  final FormFieldValidator<String> validate;
+  final FormFieldValidator? validate;
   List<TextInputFormatter>? inputformatters;
   TextInputType keyboardtypes;
   Function(String?)? onsaved;
@@ -18,8 +18,8 @@ class ReuseTextFields extends StatelessWidget {
     required this.inputfieldcolor,
     this.controller,
     this.password,
-    this.autocorrect = true,
-    required this.validate,
+    this.autocorrect = false,
+    this.validate,
     this.inputformatters,
     required this.keyboardtypes,
     this.onsaved,
@@ -42,13 +42,15 @@ class ReuseTextFields extends StatelessWidget {
           autocorrect: autocorrect,
           textAlign: TextAlign.center,
           decoration: InputDecoration(
+              isCollapsed: true,
+              isDense: true,
               filled: true,
               fillColor: inputfieldcolor,
               border: OutlineInputBorder(),
-              contentPadding: EdgeInsets.symmetric(vertical: 4),
+              contentPadding: EdgeInsets.only(bottom: 10, top: 10),
               helperText: '',
               hintText: text,
-              hintStyle: TextStyle(fontSize: 14)),
+              hintStyle: TextStyle(fontSize: 14, color: Colors.black45)),
         ),
       ),
     );

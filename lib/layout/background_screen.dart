@@ -12,9 +12,11 @@ class BackGroundImg {
             ),
           ),
         ),
-        const SizedBox(
-          height: 30,
-        ),
+        Align(
+            alignment: Alignment(0.0, -0.7),
+            child: Image.asset(
+              "assets/image/splashlogo.png",
+            )),
       ],
     );
   }

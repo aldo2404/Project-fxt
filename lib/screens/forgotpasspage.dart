@@ -33,6 +33,24 @@ class _PasswordForgotPageState extends State<PasswordForgotPage> {
             backgroundColor: Colors.transparent,
             elevation: 0.0,
           )),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              // Align(
+              //     alignment: Alignment(0.0, -0.7),
+              //     child: Image.asset(
+              //       "assets/image/splashlogo.png",
+              //     )),
+              // Container(
+              //   // height: 100,
+              //   // width: 110,
+              //   child: Image.asset(
+              //     "assets/image/splashlogo.png",
+              //     // fit: BoxFit.fitWidth,
+              //   ),
+              // ),
+            ],
+          ),
           Center(
             child: Form(
               key: formfield,
@@ -40,15 +58,7 @@ class _PasswordForgotPageState extends State<PasswordForgotPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  SizedBox(
-                    height: 100,
-                    width: 110,
-                    child: Image.asset(
-                      "assets/image/splashlogo.png",
-                      fit: BoxFit.fitWidth,
-                    ),
-                  ),
-                  SizedBox(height: 155),
+                  const SizedBox(height: 10),
                   const Text(
                     "Forgot Password?",
                     style: TextStyle(
@@ -56,14 +66,17 @@ class _PasswordForgotPageState extends State<PasswordForgotPage> {
                         fontWeight: FontWeight.w500,
                         color: Colors.white),
                   ),
-                  SizedBox(height: 17),
-                  const Text(
-                    "Enter your email and we'll send you a link to reset your \npassword",
-                    style: TextStyle(
-                      color: Colors.white38,
-                      fontSize: 16,
+                  const SizedBox(height: 17),
+                  Container(
+                    width: 300,
+                    child: const Text(
+                      "Enter your email and we'll send you a link to reset your password",
+                      style: TextStyle(
+                        color: Colors.white38,
+                        fontSize: 14,
+                      ),
+                      textAlign: TextAlign.center,
                     ),
-                    textAlign: TextAlign.center,
                   ),
                   SizedBox(height: 48),
                   ReuseTextFields(
@@ -74,7 +87,7 @@ class _PasswordForgotPageState extends State<PasswordForgotPage> {
                     controller: emailcontroller,
                     validate: ((value) {
                       if (value!.isEmpty ||
-                          !RegExp(r"^[\w-\.]+@([\w-]+\.)+[\w]")
+                          !RegExp(r"^[\w-\.]+@([\w-]+\.)+[\w]{2}")
                               .hasMatch(value)) {
                         return 'Enter correct email id';
                       }
@@ -88,7 +101,7 @@ class _PasswordForgotPageState extends State<PasswordForgotPage> {
                     onTap: () {
                       setState(() {});
                     },
-                    child: Buttonfield().clickButton("submit"),
+                    child: Buttonfield().clickButton("submit", () {}),
                   ),
                 ],
               ),
