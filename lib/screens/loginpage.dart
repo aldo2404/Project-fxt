@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fx_project/authentication/api_login.dart';
 import 'package:fx_project/layout/buttonfield.dart';
 import 'package:fx_project/layout/input_field.dart';
 import '../layout/background_screen.dart';
@@ -36,10 +37,11 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Stack(
+        fit: StackFit.expand,
         children: <Widget>[
           BackGroundImg().Images(),
-          Center(
-            heightFactor: MediaQuery.of(context).size.width,
+          Align(
+            heightFactor: MediaQuery.of(context).size.height,
             child: Form(
               key: formfield,
               autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -127,6 +129,11 @@ class _LoginPageState extends State<LoginPage> {
                     () {
                       if (formfield.currentState!.validate()) {
                         login();
+                        print(emailcontroller.text.toString());
+                        print(passcontroller.text.toString());
+                        LoginAuthentication().getres(
+                            emailcontroller.text.toString(),
+                            passcontroller.text.toString());
                         print("data store sucess");
                         Navigator.of(context).pushNamed('/environmentpage');
                       } else {

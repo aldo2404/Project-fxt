@@ -23,7 +23,7 @@ class Buttonfield {
           style: ButtonStyle(
               backgroundColor: MaterialStateProperty.all(Colors.orange[900]),
               padding: const MaterialStatePropertyAll(
-                  EdgeInsets.only(top: 15, bottom: 15))),
+                  EdgeInsets.only(top: 10, bottom: 10))),
           onPressed: onpressed,
         ),
       ),

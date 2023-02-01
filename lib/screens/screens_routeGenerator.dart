@@ -5,7 +5,7 @@ import 'package:fx_project/screens/loginpage.dart';
 
 class ScreenRouteGenerator {
   static Route<dynamic> routeGenerator(RouteSettings settings) {
-    var args = settings.arguments;
+    settings.arguments;
 
     switch (settings.name) {
       case '/loginpage':

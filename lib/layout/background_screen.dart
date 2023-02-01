@@ -13,7 +13,7 @@ class BackGroundImg {
           ),
         ),
         Align(
-            alignment: Alignment(0.0, -0.7),
+            alignment: Alignment(0.0, -0.68),
             child: Image.asset(
               "assets/image/splashlogo.png",
             )),
