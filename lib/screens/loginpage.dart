@@ -57,7 +57,7 @@ class _LoginPageState extends State<LoginPage> {
                   //     // fit: BoxFit.fitWidth,
                   //   ),
                   // ),
-                  SizedBox(height: 80),
+                  SizedBox(height: 160),
                   const Text("Welcome back!",
                       style: TextStyle(
                           fontSize: 25,
@@ -100,7 +100,7 @@ class _LoginPageState extends State<LoginPage> {
                   Container(
                     //height: 35,
                     width: 300,
-                    padding: EdgeInsets.only(top: 0, bottom: 10),
+                    padding: EdgeInsets.only(top: 0, bottom: 0),
                     child: GestureDetector(
                       child: Row(
                         children: [
@@ -144,7 +144,7 @@ class _LoginPageState extends State<LoginPage> {
                   Container(
                     // height: 25,
                     width: 300,
-                    padding: EdgeInsets.only(top: 10, bottom: 20),
+                    padding: EdgeInsets.only(top: 10, bottom: 0),
 
                     child: const Text(
                       "or",

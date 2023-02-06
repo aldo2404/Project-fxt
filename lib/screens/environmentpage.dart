@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fx_project/layout/background_screen.dart';
 import 'package:fx_project/layout/buttonfield.dart';
+import 'package:fx_project/layout/environment_box.dart';
 
 class EnvironmentPage extends StatefulWidget {
   const EnvironmentPage({super.key});
@@ -36,9 +37,9 @@ class _EnvironmentPageState extends State<EnvironmentPage> {
                 const Text(
                   "Environment",
                   style: TextStyle(
-                    fontSize: 25,
+                    fontSize: 28,
                     color: Colors.white,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: FontWeight.w500,
                   ),
                   textAlign: TextAlign.center,
                 ),
@@ -48,7 +49,7 @@ class _EnvironmentPageState extends State<EnvironmentPage> {
                   child: const Text(
                     "Choose which environment you want to enter",
                     style: TextStyle(
-                      color: Colors.white38,
+                      color: Colors.white54,
                       fontSize: 14,
                     ),
                     textAlign: TextAlign.center,
@@ -56,43 +57,13 @@ class _EnvironmentPageState extends State<EnvironmentPage> {
                 ),
                 SizedBox(height: 10),
                 Container(
+                  width: 300,
                   padding: EdgeInsets.all(20),
                   child: Row(
                     children: [
-                      Expanded(
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                          padding: EdgeInsets.all(40),
-                          child: const Text(
-                            "hello",
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold,
-                            ),
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                      ),
-                      SizedBox(width: 10),
-                      Expanded(
-                          child: Container(
-                        padding: EdgeInsets.all(40),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                        child: const Text(
-                          "hello",
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                      ))
+                      EnvironmentBox().environmentBox("hello"),
+                      SizedBox(width: 20),
+                      EnvironmentBox().environmentBox("hello"),
                     ],
                   ),
                 ),
