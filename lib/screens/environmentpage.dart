@@ -22,7 +22,7 @@ class _EnvironmentPageState extends State<EnvironmentPage> {
             child: AppBar(
               leading: IconButton(
                 onPressed: () => Navigator.of(context).pop(),
-                icon: Icon(
+                icon: const Icon(
                   Icons.arrow_back,
                 ),
               ),
@@ -43,10 +43,10 @@ class _EnvironmentPageState extends State<EnvironmentPage> {
                   ),
                   textAlign: TextAlign.center,
                 ),
-                SizedBox(height: 10),
-                Container(
+                const SizedBox(height: 10),
+                const SizedBox(
                   width: 300,
-                  child: const Text(
+                  child: Text(
                     "Choose which environment you want to enter",
                     style: TextStyle(
                       color: Colors.white54,
@@ -55,19 +55,19 @@ class _EnvironmentPageState extends State<EnvironmentPage> {
                     textAlign: TextAlign.center,
                   ),
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 Container(
                   width: 300,
-                  padding: EdgeInsets.all(20),
+                  padding: const EdgeInsets.all(20),
                   child: Row(
                     children: [
                       EnvironmentBox().environmentBox("hello"),
-                      SizedBox(width: 20),
+                      const SizedBox(width: 20),
                       EnvironmentBox().environmentBox("hello"),
                     ],
                   ),
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 Buttonfield().clickButton(
                   "Enter",
                   () {},

@@ -26,7 +26,7 @@ class _PasswordForgotPageState extends State<PasswordForgotPage> {
               child: AppBar(
             leading: IconButton(
               onPressed: () => Navigator.of(context).pop(),
-              icon: Icon(
+              icon: const Icon(
                 Icons.arrow_back,
               ),
             ),
@@ -67,9 +67,9 @@ class _PasswordForgotPageState extends State<PasswordForgotPage> {
                         color: Colors.white),
                   ),
                   const SizedBox(height: 17),
-                  Container(
+                  const SizedBox(
                     width: 300,
-                    child: const Text(
+                    child: Text(
                       "Enter your email and we'll send you a link to reset your password",
                       style: TextStyle(
                         color: Colors.white38,
@@ -78,7 +78,7 @@ class _PasswordForgotPageState extends State<PasswordForgotPage> {
                       textAlign: TextAlign.center,
                     ),
                   ),
-                  SizedBox(height: 48),
+                  const SizedBox(height: 48),
                   ReuseTextFields(
                     keyboardtypes: TextInputType.emailAddress,
                     text: "Email",

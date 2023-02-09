@@ -4,7 +4,7 @@ class EnvironmentBox {
   environmentBox(String text) {
     return Expanded(
       child: Container(
-        padding: EdgeInsets.all(40),
+        padding: const EdgeInsets.all(40),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(10),
