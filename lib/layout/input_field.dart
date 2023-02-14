@@ -11,6 +11,7 @@ class ReuseTextFields extends StatelessWidget {
   List<TextInputFormatter>? inputformatters;
   TextInputType keyboardtypes;
   Function(String?)? onsaved;
+  Widget? suffixs;
 
   ReuseTextFields({
     Key? key,
@@ -23,6 +24,7 @@ class ReuseTextFields extends StatelessWidget {
     this.inputformatters,
     required this.keyboardtypes,
     this.onsaved,
+    this.suffixs,
   }) : super(key: key);
 
   @override
@@ -42,15 +44,17 @@ class ReuseTextFields extends StatelessWidget {
           autocorrect: autocorrect,
           textAlign: TextAlign.center,
           decoration: InputDecoration(
-              isCollapsed: true,
-              isDense: true,
-              filled: true,
-              fillColor: inputfieldcolor,
-              border: const OutlineInputBorder(),
-              contentPadding: const EdgeInsets.only(bottom: 10, top: 10),
-              helperText: '',
-              hintText: text,
-              hintStyle: const TextStyle(fontSize: 14, color: Colors.black45)),
+            isCollapsed: true,
+            isDense: true,
+            filled: true,
+            fillColor: inputfieldcolor,
+            border: const OutlineInputBorder(),
+            contentPadding: const EdgeInsets.only(bottom: 10, top: 10),
+            helperText: '',
+            hintText: text,
+            hintStyle: const TextStyle(fontSize: 14, color: Colors.black45),
+            suffix: suffixs,
+          ),
         ),
       ),
     );

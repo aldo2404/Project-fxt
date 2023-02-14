@@ -1,33 +1,37 @@
 // ignore_for_file: avoid_print
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fx_project/blocpattern/login_bloc/login_bloc.dart';
+//import 'package:fx_project/blocpattern/login_bloc/login_bloc.dart';
+import 'package:fx_project/constantbase/baseconstant.dart';
+import 'package:fx_project/controller/login_controller.dart';
 // import 'package:fx_project/authentication/api_login.dart';
 import 'package:fx_project/layout/alertbox.dart';
 import 'package:fx_project/layout/buttonfield.dart';
 import 'package:fx_project/layout/input_field.dart';
-import 'package:fx_project/repositories/repositories.dart';
 import 'package:fx_project/screens/environmentpage.dart';
 import 'package:fx_project/screens/forgotpasswordpage.dart';
+import 'package:fx_project/services/loginservice.dart';
 import '../layout/background_screen.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
-class LoginPage extends StatefulWidget {
-  final UserRepositories userRepositories;
-  const LoginPage({super.key, required this.userRepositories})
-      : assert(userRepositories != null);
+class LoginPageCopy extends StatefulWidget {
+  // final UserRepositories userRepositories;
+  // const LoginPage({super.key, required this.userRepositories})
+  //     : assert(userRepositories != null);
+  const LoginPageCopy({super.key});
 
   @override
   // ignore: no_logic_in_create_state
-  State<LoginPage> createState() => _LoginPageState(userRepositories);
+  State<LoginPageCopy> createState() => _LoginPageCopyState();
 }
 
-class _LoginPageState extends State<LoginPage> {
-  final UserRepositories userRepositories;
-  _LoginPageState(this.userRepositories);
+class _LoginPageCopyState extends State<LoginPageCopy> {
+  // final UserRepositories userRepositories;
+  // _LoginPageState(this.userRepositories);
 
   final formfield = GlobalKey<FormState>();
   TextEditingController emailcontroller = TextEditingController();
@@ -49,29 +53,39 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    onLoginButtonPressed() {
-      BlocProvider.of<LoginBloc>(context).add(LoginButtonPressed(
-          email: emailcontroller.text, password: passcontroller.text));
-    }
+    // onLoginButtonPressed() {
+    //   BlocProvider.of<LoginBloc>(context).add(LoginButtonPressed(
+    //       email: emailcontroller.text, password: passcontroller.text));
+    // }
 
-    return BlocListener<LoginBloc, LoginState>(
-      listener: (context, state) {
-        if (state is LoginFailure) {
-          ReuseAlertDialogBox().alertDialog(
-              context, "Login Failed", "User not authorized to login");
-        }
-      },
-      child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        body: Stack(
-          fit: StackFit.expand,
-          children: <Widget>[
-            BackGroundImg().Images(),
-            Align(
-              heightFactor: MediaQuery.of(context).size.height,
-              child: BlocBuilder<LoginBloc, LoginState>(
-                builder: (context, state) {
-                  return Form(
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+
+      //BlocListener<LoginBloc, LoginState>(
+      // listener: (context, state) {
+      //   if (state is LoginFailure) {
+      //     ReuseAlertDialogBox().alertDialog(
+      //         context, "Login Failed", "User not authorized to login");
+      //   }
+      // },
+      // child: Scaffold(
+      //   resizeToAvoidBottomInset: false,
+      body: BlocProvider(
+        create: buildBlocProvider,
+        child: BlocConsumer<LoginCubit, LoginState>(
+          listener: buildBlocListener,
+          builder: (context, state) {
+            return Stack(
+              fit: StackFit.expand,
+              children: <Widget>[
+                BackGroundImg().Images(),
+                Align(
+                  heightFactor: MediaQuery.of(context).size.height,
+                  child:
+                      //  BlocBuilder<LoginBloc, LoginState>(
+                      //   builder: (context, state) {
+                      //     return
+                      Form(
                     key: formfield,
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     child: Column(
@@ -150,7 +164,7 @@ class _LoginPageState extends State<LoginPage> {
                                   value: _isChecked,
                                   onChanged: (value) {
                                     _isChecked = !_isChecked;
-                                    //setState(() {});
+                                    setState(() {});
                                   },
                                 ),
                                 const Text(
@@ -167,14 +181,16 @@ class _LoginPageState extends State<LoginPage> {
                         Buttonfield().clickButton(
                           "Log In",
                           () {
-                            if (emailcontroller.text.isEmpty ||
-                                passcontroller.text.isEmpty) {
-                              ReuseAlertDialogBox().alertDialog(
-                                  context, "Alert", "please enter valid data");
-                            }
+                            // if (emailcontroller.text.isEmpty ||
+                            //     passcontroller.text.isEmpty) {
+                            //   ReuseAlertDialogBox().alertDialog(
+                            //       context, "Alert", "please enter valid data");
+                            // }
                             if (formfield.currentState!.validate()) {
                               login();
-                              onLoginButtonPressed();
+                              context.read<LoginCubit>().onPressedLogin(
+                                  emailcontroller, passcontroller);
+                              //onLoginButtonPressed();
                               print(emailcontroller.text.toString());
                               print(passcontroller.text.toString());
                               // LoginAuthentication().getres(
@@ -182,10 +198,13 @@ class _LoginPageState extends State<LoginPage> {
                               //     passcontroller.text.toString());
                               print("data store sucess");
                               Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (_) => EnvironmentPage()));
+                                  builder: (_) => const EnvironmentPage()));
                             } else {
                               print("Enter valied data");
                             }
+                            state is LoginLoading
+                                ? const CircularProgressIndicator.adaptive()
+                                : const Text('Login');
                           },
                         ),
                         Container(
@@ -221,15 +240,33 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ],
                     ),
-                  );
-                },
-              ),
-            ),
-          ],
+                  ),
+                ),
+              ],
+            );
+          },
         ),
       ),
     );
   }
+
+  void buildBlocListener(context, state) {
+    if (state is LoginCompleted) {
+      final data = state.loginModel;
+      if (data.error != null) {
+        ReuseAlertDialogBox()
+            .alertDialog(context, "Alert", "please enter valid data");
+      } else {
+        ReuseAlertDialogBox().alertDialog(context, "LOGIN", "Login Success");
+      }
+    }
+  }
+
+  LoginCubit buildBlocProvider(context) => LoginCubit(
+        service: LoginService(
+          service: Dio(BaseOptions(baseUrl: Constants.baseUrl)),
+        ),
+      );
 
   void login() {
     if (_isChecked) {

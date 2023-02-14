@@ -2,7 +2,8 @@ import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class UserRepositories {
-  static String baseUrl = "https://qaapifyxt.com/v1/login/";
+  static String mainUrl = "https://devapifyxt.com";
+  var baseUrl = "$mainUrl/v1/login/";
 
   final FlutterSecureStorage storage = FlutterSecureStorage();
   final Dio _dio = Dio();

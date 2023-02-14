@@ -1,5 +1,4 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fx_project/blocpattern/login_bloc/login_bloc.dart';
 import 'package:fx_project/repositories/repositories.dart';
 import 'auth.dart';
 import 'package:flutter/material.dart';
@@ -11,9 +10,8 @@ class AuthenticationBloc
       : assert(userRepositories != null),
         super(Key as AuthenticationState);
 
-  @override
   AuthenticationState get initialState => AuthenticationUninitialized();
-  @override
+
   Stream<AuthenticationState> mapEventToState(
     AuthenticationEvent event,
   ) async* {
