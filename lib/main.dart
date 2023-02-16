@@ -1,7 +1,9 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fx_project/authentication_bloc/auth.dart';
+import 'package:fx_project/repository/repository.dart';
 import 'package:fx_project/screens/loginpagecopy.dart';
-import 'package:fx_project/repositories/repositories.dart';
+//import 'package:fx_project/repositories/repositories.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 
@@ -79,6 +81,28 @@ class MyApp extends StatelessWidget {
   }
 }
 
+class Authentication extends StatelessWidget {
+  const Authentication({super.key});
+  @override
+  Widget build(BuildContext context) {
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+            create: ((context) => AuthBloc(LoginInitState(), AuthRepository())))
+      ],
+      child: const MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: LoginPageCopy(),
+        // routes: {
+        //   '/': (context) => LoginView(),
+        //   '/forgotScreen': (context) => ForgotScreen(),
+        //   '/environmentScreen': (context) => EnvironmentScreen(),
+        // },
+      ),
+    );
+  }
+}
+
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
 
@@ -92,30 +116,33 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(const Duration(seconds: 3))
-        .then((value) => FlutterNativeSplash.remove());
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      Future.delayed(const Duration(seconds: 3)).then((value) {
+        FlutterNativeSplash.remove();
+      });
 
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => const LoginPageCopy()),
-      //  const MaterialPageRoutes()),
-    );
+      Navigator.pushReplacement(context,
+          MaterialPageRoute(builder: (context) => const Authentication())
+          //  const MaterialPageRoutes()),
+          );
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    throw UnimplementedError();
-    // return Container(
-    //   decoration: const BoxDecoration(
-    //     image: DecorationImage(
-    //       image: AssetImage('assets/image/background.png'),
-    //       fit: BoxFit.fill,
-    //     ),
-    //   ),
-    //   child: Image.asset(
-    //     "assets/image/splashlogo.png",
-    //     scale: 0.6,
-    //   ),
-    // );
+    //TODO: implement build
+    //throw UnimplementedError();
+    return Container(
+      decoration: const BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage('assets/image/background.png'),
+          fit: BoxFit.fill,
+        ),
+      ),
+      child: Image.asset(
+        "assets/image/splashlogo.png",
+        scale: 0.6,
+      ),
+    );
   }
 }

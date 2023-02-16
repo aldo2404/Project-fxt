@@ -12,13 +12,13 @@ class LoginCubit extends Cubit<LoginState> {
 
   LoginService service;
 
-  Future<void> onPressedLogin(TextEditingController emailController,
-      TextEditingController passwordController) async {
+  Future<void> onPressedLogin(TextEditingController emailcontroller,
+      TextEditingController passcontroller) async {
     emit(LoginLoading());
 
     final model = LoginModel(
-      email: emailController.text,
-      password: passwordController.text,
+      email: emailcontroller.text,
+      password: passcontroller.text,
     );
 
     final response = await service.loginService(model);

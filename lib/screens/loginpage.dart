@@ -164,30 +164,32 @@ class _LoginPageState extends State<LoginPage> {
                             }),
                           ),
                         ),
-                        Buttonfield().clickButton(
-                          "Log In",
-                          () {
-                            if (emailcontroller.text.isEmpty ||
-                                passcontroller.text.isEmpty) {
-                              ReuseAlertDialogBox().alertDialog(
-                                  context, "Alert", "please enter valid data");
-                            }
-                            if (formfield.currentState!.validate()) {
-                              login();
-                              onLoginButtonPressed();
-                              print(emailcontroller.text.toString());
-                              print(passcontroller.text.toString());
-                              // LoginAuthentication().getres(
-                              //     emailcontroller.text.toString(),
-                              //     passcontroller.text.toString());
-                              print("data store sucess");
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (_) => EnvironmentPage()));
-                            } else {
-                              print("Enter valied data");
-                            }
-                          },
-                        ),
+                        // Buttonfield().clickButton(
+                        //   context,
+                        //   state,
+                        //   "Log In",
+                        //   () {
+                        //     if (emailcontroller.text.isEmpty ||
+                        //         passcontroller.text.isEmpty) {
+                        //       ReuseAlertDialogBox().alertDialog(
+                        //           context, "Alert", "please enter valid data");
+                        //     }
+                        //     if (formfield.currentState!.validate()) {
+                        //       login();
+                        //       onLoginButtonPressed();
+                        //       print(emailcontroller.text.toString());
+                        //       print(passcontroller.text.toString());
+                        //       // LoginAuthentication().getres(
+                        //       //     emailcontroller.text.toString(),
+                        //       //     passcontroller.text.toString());
+                        //       print("data store sucess");
+                        //       Navigator.of(context).push(MaterialPageRoute(
+                        //           builder: (_) => EnvironmentPage()));
+                        //     } else {
+                        //       print("Enter valied data");
+                        //     }
+                        //   },
+                        // ),
                         Container(
                           width: 300,
                           padding: const EdgeInsets.only(top: 10, bottom: 0),
@@ -197,10 +199,12 @@ class _LoginPageState extends State<LoginPage> {
                             textAlign: TextAlign.center,
                           ),
                         ),
-                        Buttonfield().clickButton(
-                          "Log In with SSO",
-                          () {},
-                        ),
+                        // Buttonfield().clickButton(
+                        //   context,
+                        //   state,
+                        //   "Log In with SSO",
+                        //   () {},
+                        // ),
                         const SizedBox(height: 140),
                         SizedBox(
                           //height: 40,

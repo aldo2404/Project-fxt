@@ -1,9 +1,6 @@
-// ignore_for_file: avoid_print
-
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-//import 'package:fx_project/blocpattern/login_bloc/login_bloc.dart';
 import 'package:fx_project/constantbase/baseconstant.dart';
 import 'package:fx_project/controller/login_controller.dart';
 // import 'package:fx_project/authentication/api_login.dart';
@@ -43,7 +40,9 @@ class _LoginPageCopyState extends State<LoginPageCopy> {
   @override
   void initState() {
     super.initState();
+    //WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
     loginTable();
+    //});
   }
 
   void loginTable() async {
@@ -79,27 +78,19 @@ class _LoginPageCopyState extends State<LoginPageCopy> {
               fit: StackFit.expand,
               children: <Widget>[
                 BackGroundImg().Images(),
-                Align(
-                  heightFactor: MediaQuery.of(context).size.height,
+                Form(
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
                   child:
                       //  BlocBuilder<LoginBloc, LoginState>(
                       //   builder: (context, state) {
                       //     return
-                      Form(
+                      Align(
+                    alignment: Alignment.center,
+                    heightFactor: MediaQuery.of(context).size.height,
                     key: formfield,
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        //SizedBox(height: 65),
-                        // Container(
-                        //   // height: 100,
-                        //   // width: 110,
-                        //   child: Image.asset(
-                        //     "assets/image/splashlogo.png",
-                        //     // fit: BoxFit.fitWidth,
-                        //   ),
-                        // ),
                         const SizedBox(height: 160),
                         const Text("Welcome back!",
                             style: TextStyle(
@@ -138,9 +129,15 @@ class _LoginPageCopyState extends State<LoginPageCopy> {
                                 passToggle = !passToggle;
                               });
                             },
-                            child: Icon(passToggle
-                                ? Icons.visibility
-                                : Icons.visibility_off),
+                            child: Padding(
+                              padding: const EdgeInsets.only(right: 4.0),
+                              child: Icon(
+                                passToggle
+                                    ? Icons.visibility
+                                    : Icons.visibility_off,
+                                size: 16.0,
+                              ),
+                            ),
                           ),
                           validate: MultiValidator([
                             RequiredValidator(errorText: "*Required"),
@@ -179,6 +176,8 @@ class _LoginPageCopyState extends State<LoginPageCopy> {
                           ),
                         ),
                         Buttonfield().clickButton(
+                          context,
+                          state,
                           "Log In",
                           () {
                             // if (emailcontroller.text.isEmpty ||
@@ -187,6 +186,9 @@ class _LoginPageCopyState extends State<LoginPageCopy> {
                             //       context, "Alert", "please enter valid data");
                             // }
                             if (formfield.currentState!.validate()) {
+                              // state is LoginLoading
+                              //     ? CircularProgressIndicator.adaptive()
+                              //     : Text('Log In');
                               login();
                               context.read<LoginCubit>().onPressedLogin(
                                   emailcontroller, passcontroller);
@@ -197,14 +199,11 @@ class _LoginPageCopyState extends State<LoginPageCopy> {
                               //     emailcontroller.text.toString(),
                               //     passcontroller.text.toString());
                               print("data store sucess");
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (_) => const EnvironmentPage()));
+                              // Navigator.of(context).push(MaterialPageRoute(
+                              //     builder: (_) => const EnvironmentPage()));
                             } else {
                               print("Enter valied data");
                             }
-                            state is LoginLoading
-                                ? const CircularProgressIndicator.adaptive()
-                                : const Text('Login');
                           },
                         ),
                         Container(
@@ -217,20 +216,25 @@ class _LoginPageCopyState extends State<LoginPageCopy> {
                           ),
                         ),
                         Buttonfield().clickButton(
+                          context,
+                          state,
                           "Log In with SSO",
                           () {},
                         ),
-                        const SizedBox(height: 140),
-                        SizedBox(
+                        //const SizedBox(height: 140),
+                        Align(
                           //height: 40,
-                          width: 300,
+                          alignment: Alignment.bottomCenter,
+                          heightFactor: 27,
+                          //width: 300,
                           child: GestureDetector(
-                            onTap: (() {
+                            onTap: () {
                               setState(() {
                                 Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (_) => PasswordForgotPage()));
+                                    builder: (_) =>
+                                        const PasswordForgotPage()));
                               });
-                            }),
+                            },
                             child: const Text(
                               "Forgot Password?",
                               style: TextStyle(color: Colors.white),
@@ -257,6 +261,8 @@ class _LoginPageCopyState extends State<LoginPageCopy> {
         ReuseAlertDialogBox()
             .alertDialog(context, "Alert", "please enter valid data");
       } else {
+        Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (_) => const EnvironmentPage()));
         ReuseAlertDialogBox().alertDialog(context, "LOGIN", "Login Success");
       }
     }
@@ -267,6 +273,12 @@ class _LoginPageCopyState extends State<LoginPageCopy> {
           service: Dio(BaseOptions(baseUrl: Constants.baseUrl)),
         ),
       );
+
+  // buildChild(LoginState state) {
+  //   return state is LoginLoading
+  //       ? CircularProgressIndicator.adaptive()
+  //       : Text('Login');
+  // }
 
   void login() {
     if (_isChecked) {
