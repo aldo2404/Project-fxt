@@ -57,70 +57,72 @@ class _PasswordForgotPageState extends State<PasswordForgotPage> {
           //   ],
           // ),
           Center(
-            child: BlocConsumer<LoginCubit, LoginState>(
-              listener: buildBlocListener,
-              builder: (context, state) {
-                return Form(
-                  key: formfield,
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const SizedBox(height: 10),
-                      const Text(
-                        "Forgot Password?",
-                        style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.white),
-                      ),
-                      const SizedBox(height: 17),
-                      const SizedBox(
-                        width: 300,
-                        child: Text(
-                          "Enter your email and we'll send you a link to reset your password",
-                          style: TextStyle(
-                            color: Colors.white38,
-                            fontSize: 14,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                      const SizedBox(height: 48),
-                      ReuseTextFields(
-                        keyboardtypes: TextInputType.emailAddress,
-                        text: "Email",
-                        inputfieldcolor: Colors.white,
-                        password: false,
-                        controller: emailcontroller,
-                        validate: ((value) {
-                          if (value!.isEmpty ||
-                              !RegExp(r"^[\w-\.]+@([\w-]+\.)+[\w]{2}")
-                                  .hasMatch(value)) {
-                            return 'Enter correct email id';
-                          }
-                          return null;
-                        }),
-                        // onsaved: (value) {
-                        //   mail = value!;
-                        // },
-                      ),
-                      GestureDetector(
-                        // onTap: () {
-                        //   setState(() {});
-                        // },
-                        child: Buttonfield().clickButton(
-                          context,
-                          state,
-                          "submit",
-                          () {},
-                        ),
-                      ),
-                    ],
+            child:
+                // BlocConsumer<LoginCubit, LoginState>(
+                //   listener: buildBlocListener,
+                //   builder: (context, state) {
+                //     return
+                Form(
+              key: formfield,
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const SizedBox(height: 10),
+                  const Text(
+                    "Forgot Password?",
+                    style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.white),
                   ),
-                );
-              },
+                  const SizedBox(height: 17),
+                  const SizedBox(
+                    width: 300,
+                    child: Text(
+                      "Enter your email and we'll send you a link to reset your password",
+                      style: TextStyle(
+                        color: Colors.white38,
+                        fontSize: 14,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  const SizedBox(height: 48),
+                  ReuseTextFields(
+                    keyboardtypes: TextInputType.emailAddress,
+                    text: "Email",
+                    inputfieldcolor: Colors.white,
+                    password: false,
+                    controller: emailcontroller,
+                    validate: ((value) {
+                      if (value!.isEmpty ||
+                          !RegExp(r"^[\w-\.]+@([\w-]+\.)+[\w]{2}")
+                              .hasMatch(value)) {
+                        return 'Enter correct email id';
+                      }
+                      return null;
+                    }),
+                    // onsaved: (value) {
+                    //   mail = value!;
+                    // },
+                  ),
+                  GestureDetector(
+                    // onTap: () {
+                    //   setState(() {});
+                    // },
+                    child:
+                        //Buttonfield().
+                        clickButton(
+                      "submit",
+                      () {},
+                    ),
+                  ),
+                ],
+              ),
             ),
+            //   },
+            // ),
           ),
         ],
       ),

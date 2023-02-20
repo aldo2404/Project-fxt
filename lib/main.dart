@@ -85,20 +85,22 @@ class Authentication extends StatelessWidget {
   const Authentication({super.key});
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider(
-            create: ((context) => AuthBloc(LoginInitState(), AuthRepository())))
-      ],
-      child: const MaterialApp(
-        debugShowCheckedModeBanner: false,
-        home: LoginPageCopy(),
-        // routes: {
-        //   '/': (context) => LoginView(),
-        //   '/forgotScreen': (context) => ForgotScreen(),
-        //   '/environmentScreen': (context) => EnvironmentScreen(),
-        // },
-      ),
+    return
+        // MultiBlocProvider(
+        //   providers: [
+        //     BlocProvider(
+        //         create: ((context) => AuthBloc(LoginInitState(), AuthRepository())))
+        //   ],
+        //   child:
+        MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: LoginPageCopy(),
+      // routes: {
+      //   '/': (context) => LoginView(),
+      //   '/forgotScreen': (context) => ForgotScreen(),
+      //   '/environmentScreen': (context) => EnvironmentScreen(),
+      // },
+      //),
     );
   }
 }
@@ -130,19 +132,24 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    //TODO: implement build
-    //throw UnimplementedError();
-    return Container(
-      decoration: const BoxDecoration(
-        image: DecorationImage(
-          image: AssetImage('assets/image/background.png'),
-          fit: BoxFit.fill,
-        ),
-      ),
-      child: Image.asset(
-        "assets/image/splashlogo.png",
-        scale: 0.6,
-      ),
-    );
+    // TODO: implement build
+    throw UnimplementedError();
   }
+
+  // @override
+  // Widget build(BuildContext context) {
+  //   throw UnimplementedError();
+  //   // return Container(
+  //   //   decoration: const BoxDecoration(
+  //   //     image: DecorationImage(
+  //   //       image: AssetImage('assets/image/background.png'),
+  //   //       fit: BoxFit.fill,
+  //   //     ),
+  //   //   ),
+  //   //   child: Image.asset(
+  //   //     "assets/image/splashlogo.png",
+  //   //     scale: 0.6,
+  //   //   ),
+  //   // );
+  // }
 }

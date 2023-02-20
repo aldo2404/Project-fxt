@@ -69,201 +69,271 @@ class _LoginPageCopyState extends State<LoginPageCopy> {
       // },
       // child: Scaffold(
       //   resizeToAvoidBottomInset: false,
-      body: BlocProvider(
-        create: buildBlocProvider,
-        child: BlocConsumer<LoginCubit, LoginState>(
-          listener: buildBlocListener,
-          builder: (context, state) {
-            return Stack(
-              fit: StackFit.expand,
-              children: <Widget>[
-                BackGroundImg().Images(),
-                Form(
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
-                  child:
-                      //  BlocBuilder<LoginBloc, LoginState>(
-                      //   builder: (context, state) {
-                      //     return
-                      Align(
-                    alignment: Alignment.center,
-                    heightFactor: MediaQuery.of(context).size.height,
-                    key: formfield,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
+      body: mainBody,
+    );
+  }
+
+  Widget get mainBody {
+    return BlocProvider(
+      create: buildBlocProvider,
+      child: bodyBlocConsumer,
+    );
+  }
+
+  Widget get bodyBlocConsumer {
+    return BlocConsumer<LoginCubit, LoginState>(
+        listener: buildBlocListener,
+        builder: (context, state) {
+          return mainForm(context, state);
+        });
+  }
+
+  Widget mainForm(BuildContext context, LoginState state) {
+    return Stack(
+      fit: StackFit.expand,
+      children: <Widget>[
+        BackGroundImg().Images(),
+        Form(
+          autovalidateMode: AutovalidateMode.onUserInteraction,
+          child:
+              //  BlocBuilder<LoginBloc, LoginState>(
+              //   builder: (context, state) {
+              //     return
+              Align(
+            alignment: Alignment.center,
+            heightFactor: MediaQuery.of(context).size.height,
+            key: formfield,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const SizedBox(height: 160),
+                const Text("Welcome back!",
+                    style: TextStyle(
+                        fontSize: 25,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.white)),
+                const SizedBox(height: 30),
+                ReuseTextFields(
+                  keyboardtypes: TextInputType.emailAddress,
+                  text: "Username",
+                  inputfieldcolor: Colors.white,
+                  password: false,
+                  controller: emailcontroller,
+                  validate: ((value) {
+                    if (value!.isEmpty ||
+                        !RegExp(r'^.+@[a-zA-Z]+\.{1}[a-zA-Z]+(\.{0,1}[a-zA-Z]+)$')
+                            .hasMatch(value)) {
+                      return 'Enter correct email id';
+                    }
+                    return null;
+                  }),
+                  //  MultiValidator([
+                  //   RequiredValidator(errorText: "*Required"),
+                  //   EmailValidator(errorText: "Enter valid email")
+                  // ]),
+                ),
+                ReuseTextFields(
+                  keyboardtypes: TextInputType.visiblePassword,
+                  text: "Password",
+                  inputfieldcolor: Colors.white,
+                  password: passToggle,
+                  controller: passcontroller,
+                  suffixs: InkWell(
+                    onTap: () {
+                      setState(() {
+                        passToggle = !passToggle;
+                      });
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 4.0),
+                      child: Icon(
+                        passToggle ? Icons.visibility : Icons.visibility_off,
+                        size: 16.0,
+                      ),
+                    ),
+                  ),
+                  validate: MultiValidator([
+                    RequiredValidator(errorText: "*Required"),
+                    MinLengthValidator(6,
+                        errorText: "password lenght too short"),
+                    MaxLengthValidator(15,
+                        errorText: "Password length too high")
+                  ]),
+                ),
+                Container(
+                  //height: 35,
+                  width: 300,
+                  padding: const EdgeInsets.only(top: 0, bottom: 0),
+                  child: GestureDetector(
+                    child: Row(
                       children: [
-                        const SizedBox(height: 160),
-                        const Text("Welcome back!",
-                            style: TextStyle(
-                                fontSize: 25,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.white)),
-                        const SizedBox(height: 30),
-                        ReuseTextFields(
-                          keyboardtypes: TextInputType.emailAddress,
-                          text: "Username",
-                          inputfieldcolor: Colors.white,
-                          password: false,
-                          controller: emailcontroller,
-                          validate: ((value) {
-                            if (value!.isEmpty ||
-                                !RegExp(r"^[\w-\.]+@([\w-]+\.)+[\w]{2}")
-                                    .hasMatch(value)) {
-                              return 'Enter correct email id';
-                            }
-                            return null;
-                          }),
-                          //  MultiValidator([
-                          //   RequiredValidator(errorText: "*Required"),
-                          //   EmailValidator(errorText: "Enter valid email")
-                          // ]),
-                        ),
-                        ReuseTextFields(
-                          keyboardtypes: TextInputType.visiblePassword,
-                          text: "Password",
-                          inputfieldcolor: Colors.white,
-                          password: passToggle,
-                          controller: passcontroller,
-                          suffixs: InkWell(
-                            onTap: () {
-                              setState(() {
-                                passToggle = !passToggle;
-                              });
-                            },
-                            child: Padding(
-                              padding: const EdgeInsets.only(right: 4.0),
-                              child: Icon(
-                                passToggle
-                                    ? Icons.visibility
-                                    : Icons.visibility_off,
-                                size: 16.0,
-                              ),
-                            ),
-                          ),
-                          validate: MultiValidator([
-                            RequiredValidator(errorText: "*Required"),
-                            MinLengthValidator(6,
-                                errorText: "password lenght too short"),
-                            MaxLengthValidator(15,
-                                errorText: "Password length too high")
-                          ]),
-                        ),
-                        Container(
-                          //height: 35,
-                          width: 300,
-                          padding: const EdgeInsets.only(top: 0, bottom: 0),
-                          child: GestureDetector(
-                            child: Row(
-                              children: [
-                                Checkbox(
-                                  checkColor: Colors.white,
-                                  side: const BorderSide(
-                                      width: 2, color: Colors.white),
-                                  value: _isChecked,
-                                  onChanged: (value) {
-                                    _isChecked = !_isChecked;
-                                    setState(() {});
-                                  },
-                                ),
-                                const Text(
-                                  "Remember me",
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                              ],
-                            ),
-                            onTap: () => setState(() {
-                              _isChecked = !_isChecked;
-                            }),
-                          ),
-                        ),
-                        Buttonfield().clickButton(
-                          context,
-                          state,
-                          "Log In",
-                          () {
-                            // if (emailcontroller.text.isEmpty ||
-                            //     passcontroller.text.isEmpty) {
-                            //   ReuseAlertDialogBox().alertDialog(
-                            //       context, "Alert", "please enter valid data");
-                            // }
-                            if (formfield.currentState!.validate()) {
-                              // state is LoginLoading
-                              //     ? CircularProgressIndicator.adaptive()
-                              //     : Text('Log In');
-                              login();
-                              context.read<LoginCubit>().onPressedLogin(
-                                  emailcontroller, passcontroller);
-                              //onLoginButtonPressed();
-                              print(emailcontroller.text.toString());
-                              print(passcontroller.text.toString());
-                              // LoginAuthentication().getres(
-                              //     emailcontroller.text.toString(),
-                              //     passcontroller.text.toString());
-                              print("data store sucess");
-                              // Navigator.of(context).push(MaterialPageRoute(
-                              //     builder: (_) => const EnvironmentPage()));
-                            } else {
-                              print("Enter valied data");
-                            }
+                        Checkbox(
+                          checkColor: Colors.white,
+                          side: const BorderSide(width: 2, color: Colors.white),
+                          value: _isChecked,
+                          onChanged: (value) {
+                            _isChecked = !_isChecked;
+                            setState(() {});
                           },
                         ),
-                        Container(
-                          width: 300,
-                          padding: const EdgeInsets.only(top: 10, bottom: 0),
-                          child: const Text(
-                            "or",
-                            style: TextStyle(color: Colors.white),
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                        Buttonfield().clickButton(
-                          context,
-                          state,
-                          "Log In with SSO",
-                          () {},
-                        ),
-                        //const SizedBox(height: 140),
-                        Align(
-                          //height: 40,
-                          alignment: Alignment.bottomCenter,
-                          heightFactor: 27,
-                          //width: 300,
-                          child: GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (_) =>
-                                        const PasswordForgotPage()));
-                              });
-                            },
-                            child: const Text(
-                              "Forgot Password?",
-                              style: TextStyle(color: Colors.white),
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
+                        const Text(
+                          "Remember me",
+                          style: TextStyle(color: Colors.white),
                         ),
                       ],
+                    ),
+                    onTap: () => setState(() {
+                      _isChecked = !_isChecked;
+                    }),
+                  ),
+                ),
+                //Buttonfield().
+                Padding(
+                  padding: const EdgeInsets.only(left: 20, right: 20),
+                  child: Container(
+                    width: 300,
+                    child: ElevatedButton(
+                      child: state is LoginLoading
+                          ? CircularProgressIndicator.adaptive()
+                          : Text('Log In'),
+                      // Text(
+                      //   'Log In',
+                      //   style: const TextStyle(
+                      //     color: Colors.white,
+                      //     fontSize: 16,
+                      //   ),
+                      //   textAlign: TextAlign.center,
+                      // ),
+                      style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.all(Colors.orange[900]),
+                          padding: const MaterialStatePropertyAll(
+                              EdgeInsets.only(top: 10, bottom: 10))),
+                      onPressed: () {
+                        if (emailcontroller.text.isEmpty ||
+                            passcontroller.text.isEmpty) {
+                          ReuseAlertDialogBox().alertDialog(
+                              context, "Alert", "please enter valid data");
+                        }
+                        if (formfield.currentState!.validate()) {
+                          print(emailcontroller.text.toString());
+                          print(passcontroller.text.toString());
+                          // state is LoginLoading
+                          //     ? const CircularProgressIndicator
+                          //         .adaptive()
+                          //     : const Text('Log In');
+
+                          context
+                              .read<LoginCubit>()
+                              .onPressedLogin(emailcontroller, passcontroller);
+                          login();
+                          //onLoginButtonPressed();
+
+                          // LoginAuthentication().getres(
+                          //     emailcontroller.text.toString(),
+                          //     passcontroller.text.toString());
+                          print("data store sucess");
+                          // Navigator.of(context).push(MaterialPageRoute(
+                          //     builder: (_) => const EnvironmentPage()));
+                        } else {
+                          print("Enter valied data");
+                        }
+                      },
+                    ),
+                  ),
+                ),
+                // clickButton("Log In", () {
+                //   if (emailcontroller.text.isEmpty ||
+                //       passcontroller.text.isEmpty) {
+                //     ReuseAlertDialogBox().alertDialog(
+                //         context, "Alert", "please enter valid data");
+                //   }
+                //   if (formfield.currentState!.validate()) {
+                //     state is LoginLoading
+                //         ? const CircularProgressIndicator.adaptive()
+                //         : const Text('Log In');
+
+                //     context.read<LoginCubit>().onPressedLogin(
+                //         emailcontroller, passcontroller);
+                //     login();
+                //     //onLoginButtonPressed();
+                //     print(emailcontroller.text.toString());
+                //     print(passcontroller.text.toString());
+                //     // LoginAuthentication().getres(
+                //     //     emailcontroller.text.toString(),
+                //     //     passcontroller.text.toString());
+                //     print("data store sucess");
+                //     // Navigator.of(context).push(MaterialPageRoute(
+                //     //     builder: (_) => const EnvironmentPage()));
+                //   } else {
+                //     print("Enter valied data");
+                //   }
+                // }),
+                Container(
+                  width: 300,
+                  padding: const EdgeInsets.only(top: 10, bottom: 0),
+                  child: const Text(
+                    "or",
+                    style: TextStyle(color: Colors.white),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                //Buttonfield().
+                clickButton(
+                  // state is LoginLoading
+                  //         ? CircularProgressIndicator.adaptive()
+                  //         : Text('Log In');
+
+                  "Log In with SSO",
+                  () {
+                    setState(() {
+                      state is LoginLoading
+                          ? CircularProgressIndicator.adaptive()
+                          : Text('Log In');
+                    });
+                  },
+                ),
+                //const SizedBox(height: 140),
+                Align(
+                  //height: 40,
+                  alignment: Alignment.bottomCenter,
+                  heightFactor: 12,
+                  //width: 300,
+                  child: GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (_) => const PasswordForgotPage()));
+                      });
+                    },
+                    child: const Text(
+                      "Forgot Password?",
+                      style: TextStyle(color: Colors.white),
+                      textAlign: TextAlign.center,
                     ),
                   ),
                 ),
               ],
-            );
-          },
+            ),
+          ),
         ),
-      ),
+      ],
     );
   }
+  //     ),
+  //   ),
+  // );
 
   void buildBlocListener(context, state) {
     if (state is LoginCompleted) {
       final data = state.loginModel;
       if (data.error != null) {
-        ReuseAlertDialogBox()
-            .alertDialog(context, "Alert", "please enter valid data");
+        ReuseAlertDialogBox().alertDialog(context, "Alert", data.error!);
       } else {
         Navigator.of(context).pushReplacement(
             MaterialPageRoute(builder: (_) => const EnvironmentPage()));
-        ReuseAlertDialogBox().alertDialog(context, "LOGIN", "Login Success");
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text("Log In Success")));
       }
     }
   }
@@ -274,7 +344,7 @@ class _LoginPageCopyState extends State<LoginPageCopy> {
         ),
       );
 
-  // buildChild(LoginState state) {
+  // Widget buildChild(LoginState state) {
   //   return state is LoginLoading
   //       ? CircularProgressIndicator.adaptive()
   //       : Text('Login');
