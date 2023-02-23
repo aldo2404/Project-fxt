@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:fx_project/models/login_model.dart';
 import 'package:fx_project/models/login_response_model.dart';
 
 class LoginService {
@@ -7,7 +8,7 @@ class LoginService {
   static final storage = FlutterSecureStorage();
   LoginService({required this.service});
 
-  Future<LoginResponseModel?> loginService(loginModel) async {
+  Future<LoginResponseModel?> loginService(LoginModel loginModel) async {
     final data = {
       'email': loginModel.email,
       'password': loginModel.password,
@@ -17,18 +18,19 @@ class LoginService {
       return status! <= 500;
     }
 
-    final options = Options(validateStatus: validateStatus);
+    final options =
+        Options(validateStatus: validateStatus, headers: {"source": "android"});
 
     final response = await service.post(
       '/v1/login/',
       options: options,
       data: data,
     );
-
+    print("response in loginservice: ${response}");
     return LoginResponseModel.fromJson(response.data);
   }
 
-  static void storeToken(String token) async {
+  static Future<void> storeToken(String token) async {
     await storage.write(key: "token", value: token);
   }
 

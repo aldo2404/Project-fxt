@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fx_project/layout/alertbox.dart';
 import 'package:fx_project/layout/background_screen.dart';
 import 'package:fx_project/layout/buttonfield.dart';
-
 import '../controller/login_controller.dart';
 import '../layout/input_field.dart';
 
@@ -38,24 +36,6 @@ class _PasswordForgotPageState extends State<PasswordForgotPage> {
             backgroundColor: Colors.transparent,
             elevation: 0.0,
           )),
-          // Row(
-          //   mainAxisAlignment: MainAxisAlignment.center,
-          //   children: [
-          //     Align(
-          //         alignment: Alignment(0.0, -0.7),
-          //         child: Image.asset(
-          //           "assets/image/splashlogo.png",
-          //         )),
-          //     Container(
-          //       // height: 100,
-          //       // width: 110,
-          //       child: Image.asset(
-          //         "assets/image/splashlogo.png",
-          //         // fit: BoxFit.fitWidth,
-          //       ),
-          //     ),
-          //   ],
-          // ),
           Center(
             child:
                 // BlocConsumer<LoginCubit, LoginState>(
@@ -114,7 +94,8 @@ class _PasswordForgotPageState extends State<PasswordForgotPage> {
                     child:
                         //Buttonfield().
                         clickButton(
-                      "submit",
+                      //"submit",
+                      child: const Text("submit"),
                       () {},
                     ),
                   ),

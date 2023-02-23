@@ -26,9 +26,15 @@ class LoginCubit extends Cubit<LoginState> {
     print(json.encode(response));
 
     if (response is LoginResponseModel) {
-      emit(LoginCompleted(response));
+      if (response.error != '') {
+        print("token is available:");
+        LoginService.storeToken(response.token!);
+        emit(LoginCompleted(response));
+      } else {
+        print("error encountered");
+        emit(LoginError("Error encountered while login"));
+      }
     } else {
-      // emit(LoginError('Error'));
       emit(LoginInitial());
     }
   }

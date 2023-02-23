@@ -1,37 +1,34 @@
-// ignore_for_file: avoid_print
+// ignore_for_file: prefer_typing_uninitialized_variables
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fx_project/blocpattern/login_bloc/login_bloc.dart';
-// import 'package:fx_project/authentication/api_login.dart';
+import 'package:fx_project/constantbase/baseconstant.dart';
+import 'package:fx_project/controller/login_controller.dart';
 import 'package:fx_project/layout/alertbox.dart';
 import 'package:fx_project/layout/buttonfield.dart';
 import 'package:fx_project/layout/input_field.dart';
-import 'package:fx_project/repositories/repositories.dart';
+import 'package:fx_project/models/login_response_model.dart';
 import 'package:fx_project/screens/environmentpage.dart';
 import 'package:fx_project/screens/forgotpasswordpage.dart';
+import 'package:fx_project/services/loginservice.dart';
 import '../layout/background_screen.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 class LoginPage extends StatefulWidget {
-  final UserRepositories userRepositories;
-  const LoginPage({super.key, required this.userRepositories})
-      : assert(userRepositories != null);
+  const LoginPage({super.key});
 
   @override
   // ignore: no_logic_in_create_state
-  State<LoginPage> createState() => _LoginPageState(userRepositories);
+  State<LoginPage> createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final UserRepositories userRepositories;
-  _LoginPageState(this.userRepositories);
-
   final formfield = GlobalKey<FormState>();
-  TextEditingController emailcontroller = TextEditingController();
-  TextEditingController passcontroller = TextEditingController();
+  final emailcontroller = TextEditingController();
+  final passcontroller = TextEditingController();
   bool _isChecked = false;
   bool passToggle = true;
 
@@ -49,43 +46,26 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    onLoginButtonPressed() {
-      BlocProvider.of<LoginBloc>(context).add(LoginButtonPressed(
-          email: emailcontroller.text, password: passcontroller.text));
-    }
-
-    return BlocListener<LoginBloc, LoginState>(
-      listener: (context, state) {
-        if (state is LoginFailure) {
-          ReuseAlertDialogBox().alertDialog(
-              context, "Login Failed", "User not authorized to login");
-        }
-      },
-      child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        body: Stack(
-          fit: StackFit.expand,
-          children: <Widget>[
-            BackGroundImg().Images(),
-            Align(
-              heightFactor: MediaQuery.of(context).size.height,
-              child: BlocBuilder<LoginBloc, LoginState>(
-                builder: (context, state) {
-                  return Form(
-                    key: formfield,
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      body: BlocProvider(
+        create: buildBlocProvider,
+        child: BlocConsumer<LoginCubit, LoginState>(
+          listener: buildBlocListener,
+          builder: (context, state) {
+            return Stack(
+              fit: StackFit.expand,
+              children: <Widget>[
+                BackGroundImg().Images(),
+                Form(
+                  key: formfield,
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  child: Align(
+                    alignment: Alignment.center,
+                    heightFactor: MediaQuery.of(context).size.height,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        //SizedBox(height: 65),
-                        // Container(
-                        //   // height: 100,
-                        //   // width: 110,
-                        //   child: Image.asset(
-                        //     "assets/image/splashlogo.png",
-                        //     // fit: BoxFit.fitWidth,
-                        //   ),
-                        // ),
                         const SizedBox(height: 160),
                         const Text("Welcome back!",
                             style: TextStyle(
@@ -101,16 +81,12 @@ class _LoginPageState extends State<LoginPage> {
                           controller: emailcontroller,
                           validate: ((value) {
                             if (value!.isEmpty ||
-                                !RegExp(r"^[\w-\.]+@([\w-]+\.)+[\w]{2}")
+                                !RegExp(r'^.+@[a-zA-Z]+\.{1}[a-zA-Z]+(\.{0,1}[a-zA-Z]+)$')
                                     .hasMatch(value)) {
                               return 'Enter correct email id';
                             }
                             return null;
                           }),
-                          //  MultiValidator([
-                          //   RequiredValidator(errorText: "*Required"),
-                          //   EmailValidator(errorText: "Enter valid email")
-                          // ]),
                         ),
                         ReuseTextFields(
                           keyboardtypes: TextInputType.visiblePassword,
@@ -124,9 +100,15 @@ class _LoginPageState extends State<LoginPage> {
                                 passToggle = !passToggle;
                               });
                             },
-                            child: Icon(passToggle
-                                ? Icons.visibility
-                                : Icons.visibility_off),
+                            child: Padding(
+                              padding: const EdgeInsets.only(right: 4.0),
+                              child: Icon(
+                                passToggle
+                                    ? Icons.visibility
+                                    : Icons.visibility_off,
+                                size: 16.0,
+                              ),
+                            ),
                           ),
                           validate: MultiValidator([
                             RequiredValidator(errorText: "*Required"),
@@ -150,7 +132,7 @@ class _LoginPageState extends State<LoginPage> {
                                   value: _isChecked,
                                   onChanged: (value) {
                                     _isChecked = !_isChecked;
-                                    //setState(() {});
+                                    setState(() {});
                                   },
                                 ),
                                 const Text(
@@ -164,32 +146,28 @@ class _LoginPageState extends State<LoginPage> {
                             }),
                           ),
                         ),
-                        // Buttonfield().clickButton(
-                        //   context,
-                        //   state,
-                        //   "Log In",
-                        //   () {
-                        //     if (emailcontroller.text.isEmpty ||
-                        //         passcontroller.text.isEmpty) {
-                        //       ReuseAlertDialogBox().alertDialog(
-                        //           context, "Alert", "please enter valid data");
-                        //     }
-                        //     if (formfield.currentState!.validate()) {
-                        //       login();
-                        //       onLoginButtonPressed();
-                        //       print(emailcontroller.text.toString());
-                        //       print(passcontroller.text.toString());
-                        //       // LoginAuthentication().getres(
-                        //       //     emailcontroller.text.toString(),
-                        //       //     passcontroller.text.toString());
-                        //       print("data store sucess");
-                        //       Navigator.of(context).push(MaterialPageRoute(
-                        //           builder: (_) => EnvironmentPage()));
-                        //     } else {
-                        //       print("Enter valied data");
-                        //     }
-                        //   },
-                        // ),
+                        clickButton(
+                            child: state is LoginLoading
+                                ? const CircularProgressIndicator.adaptive()
+                                : const Text('Log In'), () {
+                          if (emailcontroller.text.isEmpty ||
+                              passcontroller.text.isEmpty) {
+                            ReuseAlertDialogBox().alertDialog(
+                                context, "Alert", "please enter valid data");
+                          }
+                          if (formfield.currentState!.validate()) {
+                            context.read<LoginCubit>().onPressedLogin(
+                                emailcontroller, passcontroller);
+                            login();
+
+                            print(emailcontroller.text.toString());
+                            print(passcontroller.text.toString());
+
+                            print("data store sucess");
+                          } else {
+                            print("Enter valied data");
+                          }
+                        }),
                         Container(
                           width: 300,
                           padding: const EdgeInsets.only(top: 10, bottom: 0),
@@ -199,23 +177,21 @@ class _LoginPageState extends State<LoginPage> {
                             textAlign: TextAlign.center,
                           ),
                         ),
-                        // Buttonfield().clickButton(
-                        //   context,
-                        //   state,
-                        //   "Log In with SSO",
-                        //   () {},
-                        // ),
-                        const SizedBox(height: 140),
-                        SizedBox(
-                          //height: 40,
-                          width: 300,
+                        clickButton(
+                          child: const Text("Log In with SSO"),
+                          () {},
+                        ),
+                        Align(
+                          alignment: Alignment.bottomCenter,
+                          heightFactor: 12,
                           child: GestureDetector(
-                            onTap: (() {
+                            onTap: () {
                               setState(() {
                                 Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (_) => PasswordForgotPage()));
+                                    builder: (_) =>
+                                        const PasswordForgotPage()));
                               });
-                            }),
+                            },
                             child: const Text(
                               "Forgot Password?",
                               style: TextStyle(color: Colors.white),
@@ -225,15 +201,41 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ],
                     ),
-                  );
-                },
-              ),
-            ),
-          ],
+                  ),
+                ),
+              ],
+            );
+          },
         ),
       ),
     );
   }
+
+  void buildBlocListener(context, state) {
+    var args;
+    if (state is LoginCompleted) {
+      final data = state.loginModel;
+      if (data.error != null) {
+        ReuseAlertDialogBox().alertDialog(context, "Alert", data.error!);
+      } else {
+        // ignore: cast_from_nullable_always_fails
+        for (var d in args as List<DomainModel>) {
+          print("${d.tojson()}");
+        }
+        Navigator.of(context).pushReplacement(MaterialPageRoute(
+            builder: (_) =>
+                EnvironmentPage(domains: data.domains as List<DomainModel>)));
+        ScaffoldMessenger.of(context)
+            .showSnackBar(const SnackBar(content: Text("Log In Success")));
+      }
+    }
+  }
+
+  LoginCubit buildBlocProvider(context) => LoginCubit(
+        service: LoginService(
+          service: Dio(BaseOptions(baseUrl: Constants.baseUrl)),
+        ),
+      );
 
   void login() {
     if (_isChecked) {

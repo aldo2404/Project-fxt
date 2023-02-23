@@ -1,24 +1,50 @@
 import 'package:json_annotation/json_annotation.dart';
 
-part 'login_response_model.g.dart';
-
 @JsonSerializable()
 class LoginResponseModel {
   String? token;
   String? error;
+  String? category;
+  List<DomainModel>? domains;
   //String? domain;
 
   LoginResponseModel({
     this.token,
     this.error,
-    //this.domain,
+    this.category,
+    this.domains,
   });
 
   factory LoginResponseModel.fromJson(Map<String, dynamic> json) {
-    return _$LoginResponseModelFromJson(json);
+    var domainList = json['domains'] as List;
+    List<DomainModel> parsedDomainList =
+        domainList.map((d) => DomainModel.fromJson(d)).toList();
+    return LoginResponseModel(
+        token: json['token'] as String?,
+        error: json['error'] as String?,
+        category: json['category'] as String?,
+        domains: parsedDomainList);
   }
 
   Map<String, dynamic> toJson() {
-    return _$LoginResponseModelToJson(this);
+    return {
+      'token': token,
+      'error': error,
+      'category': category,
+      'domains': domains
+    };
+  }
+}
+
+class DomainModel {
+  String? name;
+  String? host;
+  DomainModel({this.name, this.host});
+
+  factory DomainModel.fromJson(Map<String, dynamic> json) {
+    return DomainModel(name: json['name'], host: json['host']);
+  }
+  Map<String, dynamic> tojson() {
+    return {'name': name, 'host': host};
   }
 }
