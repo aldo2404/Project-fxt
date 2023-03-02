@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:fx_project/screens/camerapage.dart';
+import 'package:fx_project/screens/chatpage.dart';
 import 'package:fx_project/screens/dashboardpage.dart';
+import 'package:fx_project/screens/notificationpage.dart';
 
 class BottomNaviBar extends StatefulWidget {
   const BottomNaviBar({super.key});
@@ -12,11 +15,11 @@ class BottomNaviBar extends StatefulWidget {
 
 class _BottomNaviBarState extends State<BottomNaviBar> {
   int selectedIndex = 0;
-  static const List<Widget> selectedOption = <Widget>[
+  static List<Widget> selectedOption = <Widget>[
     DashboardPage(),
-    // ChatPage(),
-    // Camera(),
-    // NotificationPage(),
+    ChatPage(),
+    //CameraPage(camera: firstCamera),
+    NotificationPage(),
   ];
   void _onItemTapped(int index) {
     setState(() {

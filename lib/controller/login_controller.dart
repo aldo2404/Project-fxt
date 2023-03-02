@@ -14,7 +14,7 @@ class LoginCubit extends Cubit<LoginState> {
 
   Future<void> onPressedLogin(TextEditingController emailcontroller,
       TextEditingController passcontroller) async {
-    emit(LoginLoading());
+    emit(const LoginLoading());
 
     final model = LoginModel(
       email: emailcontroller.text,
@@ -23,7 +23,7 @@ class LoginCubit extends Cubit<LoginState> {
 
     final response = await service.loginService(model);
 
-    print(json.encode(response));
+    // print("Login Controller: response ${json.encode(response)}");
 
     if (response is LoginResponseModel) {
       if (response.error != '') {
@@ -32,10 +32,10 @@ class LoginCubit extends Cubit<LoginState> {
         emit(LoginCompleted(response));
       } else {
         print("error encountered");
-        emit(LoginError("Error encountered while login"));
+        emit(const LoginError("Error encountered while login"));
       }
     } else {
-      emit(LoginInitial());
+      emit(const LoginInitial());
     }
   }
 }

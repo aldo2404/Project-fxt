@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:fx_project/layout/dashboardbox.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});
@@ -17,10 +16,16 @@ class _DashboardPageState extends State<DashboardPage> {
         backgroundColor: const Color.fromARGB(255, 1, 48, 92),
         leading: Image.asset('assets/image/splashlogo.png'),
         actions: [
-          IconButton(onPressed: () {}, icon: Icon(Icons.power_settings_new))
+          IconButton(
+              onPressed: () {},
+              icon: Icon(Icons.power_settings_new, color: Colors.orange[900]))
         ],
       ),
-      body: Stack(),
+      body: ListView(children: [
+        Stack(
+          children: [DashBoardBox(Colors.amber[200])],
+        ),
+      ]),
     );
   }
 }

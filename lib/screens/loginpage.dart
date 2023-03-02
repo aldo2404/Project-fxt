@@ -212,19 +212,19 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void buildBlocListener(context, state) {
-    var args;
     if (state is LoginCompleted) {
       final data = state.loginModel;
       if (data.error != null) {
         ReuseAlertDialogBox().alertDialog(context, "Alert", data.error!);
       } else {
-        // ignore: cast_from_nullable_always_fails
-        for (var d in args as List<DomainModel>) {
-          print("${d.tojson()}");
-        }
-        Navigator.of(context).pushReplacement(MaterialPageRoute(
-            builder: (_) =>
-                EnvironmentPage(domains: data.domains as List<DomainModel>)));
+        // for (var d in data as List<DomainModel>) {
+        //   print("${d.tojson()}");
+        // }
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+              builder: (_) =>
+                  EnvironmentPage(domains: data.domains as List<DomainModel>)),
+        );
         ScaffoldMessenger.of(context)
             .showSnackBar(const SnackBar(content: Text("Log In Success")));
       }

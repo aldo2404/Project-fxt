@@ -42,7 +42,10 @@ class DomainModel {
   DomainModel({this.name, this.host});
 
   factory DomainModel.fromJson(Map<String, dynamic> json) {
-    return DomainModel(name: json['name'], host: json['host']);
+    return DomainModel(
+      name: json['name'] as String?,
+      host: json['host'] as String?,
+    );
   }
   Map<String, dynamic> tojson() {
     return {'name': name, 'host': host};

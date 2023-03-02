@@ -9,7 +9,7 @@ import 'package:fx_project/screens/loginpage.dart';
 
 class ScreenRouteGenerator {
   static Route<dynamic> routeGenerator(RouteSettings settings) {
-    var data = settings.arguments;
+    var dataargs = settings.arguments;
 
     switch (settings.name) {
       case '/loginpage':
@@ -17,11 +17,11 @@ class ScreenRouteGenerator {
       case '/passwordforgotpage':
         return MaterialPageRoute(builder: (_) => PasswordForgotPage());
       case '/environmentpage':
-        for (var d in data as List<DomainModel>) {
+        for (var d in dataargs as List<DomainModel>) {
           print("${d.tojson()}");
         }
         return MaterialPageRoute(
-            builder: (_) => EnvironmentPage(domains: data));
+            builder: (_) => EnvironmentPage(domains: dataargs));
       default:
         return MaterialPageRoute(builder: (_) => LoginPage());
     }
