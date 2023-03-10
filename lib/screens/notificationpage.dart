@@ -13,11 +13,21 @@ class _NotificationPageState extends State<NotificationPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 1, 48, 92),
-        leading: Image.asset('assets/image/splashlogo.png'),
-        centerTitle: true,
-        title: Container(
-          child: Text("Notification Page"),
+        leading: IconButton(
+          onPressed: () => Navigator.of(context).pop(),
+          icon: const Icon(
+            Icons.arrow_back,
+          ),
         ),
+        centerTitle: true,
+        title: const Center(
+          child: Text("Notifications"),
+        ),
+      ),
+      body: Container(),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        child: const Icon(Icons.camera_alt),
       ),
     );
   }

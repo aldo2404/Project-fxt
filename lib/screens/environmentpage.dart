@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:fx_project/layout/alertbox.dart';
 import 'package:fx_project/layout/background_screen.dart';
 import 'package:fx_project/layout/bottomnavigation.dart';
 import 'package:fx_project/layout/buttonfield.dart';
@@ -14,10 +15,10 @@ class EnvironmentPage extends StatefulWidget {
   const EnvironmentPage({super.key, required this.domains});
 
   @override
-  State<EnvironmentPage> createState() => _EnvironmentPageState();
+  State<EnvironmentPage> createState() => EnvironmentPageState();
 }
 
-class _EnvironmentPageState extends State<EnvironmentPage> {
+class EnvironmentPageState extends State<EnvironmentPage> {
   static final storage = FlutterSecureStorage();
 
   @override
@@ -30,8 +31,8 @@ class _EnvironmentPageState extends State<EnvironmentPage> {
     var domains = widget.domains as List<DomainModel>;
 
     for (var d in domains) {
-      print("host: ${d.host}");
       print("name: ${d.name}");
+      print("host: ${d.host}");
     }
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -78,6 +79,7 @@ class _EnvironmentPageState extends State<EnvironmentPage> {
                 const SizedBox(height: 10),
                 Container(
                   width: 300,
+                  //height: 100,
                   //padding: const EdgeInsets.all(20),
                   child: CarouselSlider.builder(
                     options: CarouselOptions(
@@ -85,37 +87,44 @@ class _EnvironmentPageState extends State<EnvironmentPage> {
                     ),
                     itemCount: domains.length,
                     itemBuilder: (context, i, id) {
-                      print('v${id}');
+                      print('url${id}');
                       String baseUrls = domains[i].host!;
 
-                      return Container(
-                        //height: 120,
-                        child: InkWell(
-                          //value :selected,
-                          onTap: () {
-                            baseUrl(baseUrls);
-                            DashBoardService(
-                              service: Dio(
-                                  BaseOptions(baseUrl: 'https://${baseUrls}')),
-                            ).dashBoardService();
-                          },
-                          onHover: (value) {
-                            setState(() {
-                              selected = value;
-                            });
-                          },
-                          child: Card(
-                            shape: selected
-                                ? RoundedRectangleBorder(
-                                    side: BorderSide(
-                                        color: Color.fromARGB(255, 230, 81, 0),
-                                        width: 4.0),
-                                    borderRadius: BorderRadius.circular(10.0))
-                                : RoundedRectangleBorder(
-                                    side: BorderSide(
-                                        color: Colors.white, width: 4.0),
-                                    borderRadius: BorderRadius.circular(10.0)),
-                            child: environmentBox(domains[i].name!),
+                      return GestureDetector(
+                        child: Container(
+                          //height: 120,
+                          width: 200,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: InkWell(
+                            //value :selected,
+                            onTap: () {
+                              baseUrl(baseUrls);
+                              DashBoardService(
+                                service: Dio(
+                                    BaseOptions(baseUrl: 'https://$baseUrls')),
+                              ).dashBoardService();
+                            },
+                            // onHover: (value) {
+                            //   setState(() {
+                            //     selected = value;
+                            //   });
+                            // },
+                            child: Center(
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(10),
+                                child: Text(
+                                  domains[i].name!,
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ),
                           ),
                         ),
                       );
@@ -124,19 +133,20 @@ class _EnvironmentPageState extends State<EnvironmentPage> {
                 ),
                 const SizedBox(height: 20),
                 clickButton(
-                  child: const Text("submit"),
+                  child: const Text("Enter"),
                   () async {
                     dynamic base = await getBaseurl() as dynamic;
+
                     if (base != null) {
-                      print('gi${base}');
+                      print('gi_${base}');
                       return Navigator.of(context).pushReplacement(
                           MaterialPageRoute(
                               builder: (_) => const BottomNaviBar()));
                     } else {
                       print('error');
-                      return ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                              content: Text('Kindly select any environment')));
+                      // ignore: use_build_context_synchronously
+                      ReuseAlertDialogBox().alertDialog(
+                          context, "Alert", "Kindly select any environment");
                     }
                   },
                 ),
@@ -154,7 +164,7 @@ class _EnvironmentPageState extends State<EnvironmentPage> {
 
   static Future<String?> getBaseurl() async {
     dynamic baseurl = await storage.read(key: "baseurl");
-    print('ds$baseurl');
+    print('ds_$baseurl');
     return baseurl;
   }
 }

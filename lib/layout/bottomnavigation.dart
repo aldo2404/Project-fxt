@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:fx_project/screens/camerapage.dart';
 import 'package:fx_project/screens/chatpage.dart';
 import 'package:fx_project/screens/dashboardpage.dart';
+import 'package:fx_project/screens/duplicatecamerapage.dart';
+import 'package:fx_project/screens/morepage.dart';
 import 'package:fx_project/screens/notificationpage.dart';
 
 class BottomNaviBar extends StatefulWidget {
@@ -19,7 +19,9 @@ class _BottomNaviBarState extends State<BottomNaviBar> {
     DashboardPage(),
     ChatPage(),
     //CameraPage(camera: firstCamera),
+    DuplicateCameraPage(),
     NotificationPage(),
+    MorePage(),
   ];
   void _onItemTapped(int index) {
     setState(() {

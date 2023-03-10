@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-Widget DashBoardBox(color) {
+Widget DashBoardBox(
+    color, IconData icon, iconcolor, String text1, String text2) {
   return Container(
-    width: 100,
-    height: 180,
-    color: color,
+    decoration:
+        BoxDecoration(color: color, borderRadius: BorderRadius.circular(15)),
     child: Align(
       alignment: Alignment.center,
       child: Column(
@@ -13,19 +13,25 @@ Widget DashBoardBox(color) {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text("data"),
+              Icon(icon, color: iconcolor, size: 40),
             ],
           ),
+          const SizedBox(height: 20),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text("data1"),
+              Text(text1,
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold, fontSize: 30)),
             ],
           ),
+          const SizedBox(height: 20),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text("data2"),
+              Text(text2,
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold, fontSize: 25)),
             ],
           ),
         ],

@@ -119,9 +119,8 @@ class _LoginPageState extends State<LoginPage> {
                           ]),
                         ),
                         Container(
-                          //height: 35,
                           width: 300,
-                          padding: const EdgeInsets.only(top: 0, bottom: 0),
+                          padding: const EdgeInsets.only(top: 0, bottom: 5),
                           child: GestureDetector(
                             child: Row(
                               children: [
@@ -214,7 +213,9 @@ class _LoginPageState extends State<LoginPage> {
   void buildBlocListener(context, state) {
     if (state is LoginCompleted) {
       final data = state.loginModel;
+      print("$data");
       if (data.error != null) {
+        print("${data.error!}");
         ReuseAlertDialogBox().alertDialog(context, "Alert", data.error!);
       } else {
         // for (var d in data as List<DomainModel>) {

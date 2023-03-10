@@ -23,7 +23,7 @@ class LoginCubit extends Cubit<LoginState> {
 
     final response = await service.loginService(model);
 
-    // print("Login Controller: response ${json.encode(response)}");
+    //print("Login Controller: response ${json.encode(response)}");
 
     if (response is LoginResponseModel) {
       if (response.error != '') {
