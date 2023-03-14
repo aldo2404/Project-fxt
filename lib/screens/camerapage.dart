@@ -3,8 +3,10 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 
 class CameraPage extends StatefulWidget {
-  const CameraPage({super.key, required this.camera});
-  final CameraDescription camera;
+  CameraDescription camera;
+
+  CameraPage({super.key, required this.camera});
+
   @override
   State<CameraPage> createState() => _CameraPageState();
 }

@@ -18,7 +18,7 @@ class DashBoardService {
 
     final options = Options(
         validateStatus: validateStatus,
-        headers: {"Authorization": "Bearer ${token}", "source": "android"});
+        headers: {"Authorization": "Bearer $token", "source": "android"});
 
     final response = await service.get(
       '/v1/dashboard/',

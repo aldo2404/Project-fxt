@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class BackGroundImg {
-  Images() {
+  images() {
     return Stack(
       children: [
         Container(

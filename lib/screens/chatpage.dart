@@ -30,6 +30,7 @@ class _ChatPageState extends State<ChatPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
+                padding: const EdgeInsets.only(top: 10),
                 width: 333,
                 height: 30,
                 decoration: BoxDecoration(

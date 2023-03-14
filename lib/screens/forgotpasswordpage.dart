@@ -24,7 +24,7 @@ class _PasswordForgotPageState extends State<PasswordForgotPage> {
       resizeToAvoidBottomInset: false,
       body: Stack(
         children: [
-          BackGroundImg().Images(),
+          BackGroundImg().images(),
           Positioned(
               child: AppBar(
             leading: IconButton(
@@ -37,12 +37,7 @@ class _PasswordForgotPageState extends State<PasswordForgotPage> {
             elevation: 0.0,
           )),
           Center(
-            child:
-                // BlocConsumer<LoginCubit, LoginState>(
-                //   listener: buildBlocListener,
-                //   builder: (context, state) {
-                //     return
-                Form(
+            child: Form(
               key: formfield,
               autovalidateMode: AutovalidateMode.onUserInteraction,
               child: Column(
@@ -83,18 +78,9 @@ class _PasswordForgotPageState extends State<PasswordForgotPage> {
                       }
                       return null;
                     }),
-                    // onsaved: (value) {
-                    //   mail = value!;
-                    // },
                   ),
                   GestureDetector(
-                    // onTap: () {
-                    //   setState(() {});
-                    // },
-                    child:
-                        //Buttonfield().
-                        clickButton(
-                      //"submit",
+                    child: clickButton(
                       child: const Text("submit"),
                       () {},
                     ),
@@ -102,8 +88,6 @@ class _PasswordForgotPageState extends State<PasswordForgotPage> {
                 ],
               ),
             ),
-            //   },
-            // ),
           ),
         ],
       ),

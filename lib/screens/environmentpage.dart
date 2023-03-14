@@ -5,7 +5,6 @@ import 'package:fx_project/layout/alertbox.dart';
 import 'package:fx_project/layout/background_screen.dart';
 import 'package:fx_project/layout/bottomnavigation.dart';
 import 'package:fx_project/layout/buttonfield.dart';
-import 'package:fx_project/layout/environment_box.dart';
 import 'package:fx_project/models/login_response_model.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:fx_project/services/dashboardservices.dart';
@@ -19,16 +18,14 @@ class EnvironmentPage extends StatefulWidget {
 }
 
 class EnvironmentPageState extends State<EnvironmentPage> {
-  static final storage = FlutterSecureStorage();
+  static const storage = FlutterSecureStorage();
 
   @override
   Widget build(BuildContext context) {
-    bool selected = false;
-    int currentIndex = 1;
-    int _currentSlide = 0;
+    bool isSelected = false;
 
     print("domains in environment: ${widget.domains}");
-    var domains = widget.domains as List<DomainModel>;
+    var domains = widget.domains;
 
     for (var d in domains) {
       print("name: ${d.name}");
@@ -38,7 +35,7 @@ class EnvironmentPageState extends State<EnvironmentPage> {
       resizeToAvoidBottomInset: false,
       body: Stack(
         children: [
-          BackGroundImg().Images(),
+          BackGroundImg().images(),
           Positioned(
             child: AppBar(
               leading: IconButton(
@@ -77,9 +74,9 @@ class EnvironmentPageState extends State<EnvironmentPage> {
                   ),
                 ),
                 const SizedBox(height: 10),
-                Container(
+                SizedBox(
                   width: 300,
-                  //height: 100,
+                  height: 100,
                   //padding: const EdgeInsets.all(20),
                   child: CarouselSlider.builder(
                     options: CarouselOptions(
@@ -87,41 +84,46 @@ class EnvironmentPageState extends State<EnvironmentPage> {
                     ),
                     itemCount: domains.length,
                     itemBuilder: (context, i, id) {
-                      print('url${id}');
                       String baseUrls = domains[i].host!;
 
                       return GestureDetector(
+                        onTap: () {
+                          print('url$id');
+                          setState(() {
+                            isSelected = !isSelected;
+                          });
+                          print('$baseUrls');
+                          baseUrl(baseUrls);
+                          DashBoardService(
+                            service:
+                                Dio(BaseOptions(baseUrl: 'https://$baseUrls')),
+                          ).dashBoardService();
+                        },
                         child: Container(
                           //height: 120,
                           width: 200,
                           decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(10),
+                            border: isSelected
+                                ? Border.all(
+                                    color:
+                                        const Color.fromARGB(255, 230, 81, 0),
+                                    width: 2)
+                                : null,
                           ),
-                          child: InkWell(
-                            //value :selected,
-                            onTap: () {
-                              baseUrl(baseUrls);
-                              DashBoardService(
-                                service: Dio(
-                                    BaseOptions(baseUrl: 'https://$baseUrls')),
-                              ).dashBoardService();
-                            },
-                            // onHover: (value) {
-                            //   setState(() {
-                            //     selected = value;
-                            //   });
-                            // },
-                            child: Center(
-                              child: ClipRRect(
+                          child: Center(
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Colors.white,
                                 borderRadius: BorderRadius.circular(10),
-                                child: Text(
-                                  domains[i].name!,
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                              ),
+                              child: Text(
+                                domains[i].name!,
+                                textAlign: TextAlign.center,
+                                style: const TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
                                 ),
                               ),
                             ),
@@ -136,9 +138,11 @@ class EnvironmentPageState extends State<EnvironmentPage> {
                   child: const Text("Enter"),
                   () async {
                     dynamic base = await getBaseurl() as dynamic;
-
-                    if (base != null) {
-                      print('gi_${base}');
+                    if (base == null) {
+                      print('=null_$base');
+                      const CircularProgressIndicator.adaptive();
+                    } else if (base != null) {
+                      print('gi_$base');
                       return Navigator.of(context).pushReplacement(
                           MaterialPageRoute(
                               builder: (_) => const BottomNaviBar()));

@@ -56,7 +56,7 @@ class _LoginPageState extends State<LoginPage> {
             return Stack(
               fit: StackFit.expand,
               children: <Widget>[
-                BackGroundImg().Images(),
+                BackGroundImg().images(),
                 Form(
                   key: formfield,
                   autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -147,7 +147,10 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                         clickButton(
                             child: state is LoginLoading
-                                ? const CircularProgressIndicator.adaptive()
+                                ? const SizedBox(
+                                    height: 20,
+                                    width: 20,
+                                    child: CircularProgressIndicator.adaptive())
                                 : const Text('Log In'), () {
                           if (emailcontroller.text.isEmpty ||
                               passcontroller.text.isEmpty) {
@@ -213,9 +216,10 @@ class _LoginPageState extends State<LoginPage> {
   void buildBlocListener(context, state) {
     if (state is LoginCompleted) {
       final data = state.loginModel;
-      print("$data");
+      print(" data_$data");
+      print("data error_${data.error}");
       if (data.error != null) {
-        print("${data.error!}");
+        print('${data.error}');
         ReuseAlertDialogBox().alertDialog(context, "Alert", data.error!);
       } else {
         // for (var d in data as List<DomainModel>) {

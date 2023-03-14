@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 
 class MorePage extends StatefulWidget {
   const MorePage({super.key});
@@ -20,7 +18,7 @@ class _MorePageState extends State<MorePage> {
             Icons.arrow_back,
           ),
         ),
-        title: Center(child: Text("More")),
+        title: const Center(child: Text("More")),
       ),
       body: Column(
         children: const [

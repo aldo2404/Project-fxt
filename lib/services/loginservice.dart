@@ -7,7 +7,7 @@ class LoginService {
   static final storage = FlutterSecureStorage();
   LoginService({required this.service});
 
-  Future<LoginResponseModel?> loginService(loginModel) async {
+  Future<LoginResponseModel> loginService(loginModel) async {
     final data = {
       'email': loginModel.email,
       'password': loginModel.password,
@@ -26,6 +26,7 @@ class LoginService {
       data: data,
     );
     print("response in loginservice: $response");
+    print('${response.data}');
     return LoginResponseModel.fromJson(response.data);
   }
 

@@ -16,12 +16,12 @@ class BottomNaviBar extends StatefulWidget {
 class _BottomNaviBarState extends State<BottomNaviBar> {
   int selectedIndex = 0;
   static List<Widget> selectedOption = <Widget>[
-    DashboardPage(),
-    ChatPage(),
+    const DashboardPage(),
+    const ChatPage(),
     //CameraPage(camera: firstCamera),
-    DuplicateCameraPage(),
-    NotificationPage(),
-    MorePage(),
+    const DuplicateCameraPage(),
+    const NotificationPage(),
+    const MorePage(),
   ];
   void _onItemTapped(int index) {
     setState(() {
@@ -59,7 +59,7 @@ class _BottomNaviBarState extends State<BottomNaviBar> {
         type: BottomNavigationBarType.fixed,
         currentIndex: selectedIndex,
         selectedItemColor: Colors.orange[900],
-        unselectedItemColor: Color.fromARGB(255, 1, 21, 88),
+        unselectedItemColor: const Color.fromARGB(255, 1, 21, 88),
         iconSize: 23,
         onTap: _onItemTapped,
         elevation: 3,
