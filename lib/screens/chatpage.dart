@@ -20,30 +20,32 @@ class _ChatPageState extends State<ChatPage> {
           ),
         ),
         centerTitle: true,
-        title: const Center(
-          child: Text("Chat"),
-        ),
+        title: const Text("Chat"),
       ),
       body: Stack(
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                padding: const EdgeInsets.only(top: 10),
-                width: 333,
-                height: 30,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: Colors.black)),
-                child: const TextField(
-                  decoration: InputDecoration(
-                      hintText: 'Search',
-                      suffixIcon: Icon(Icons.search_outlined),
-                      border: InputBorder.none),
+          Padding(
+            padding: const EdgeInsets.only(top: 15.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const SizedBox(height: 20),
+                Container(
+                  //padding: const EdgeInsets.only(top: 10),
+                  width: 333,
+                  height: 30,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(6),
+                      border: Border.all(color: Colors.black)),
+                  child: const TextField(
+                    decoration: InputDecoration(
+                        hintText: 'Search',
+                        suffixIcon: Icon(Icons.search_outlined),
+                        border: InputBorder.none),
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           )
         ],
       ),

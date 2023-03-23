@@ -6,7 +6,6 @@ class LoginResponseModel {
   String? error;
   String? category;
   List<DomainModel>? domains;
-  //String? domain;
 
   LoginResponseModel({
     this.token,
@@ -16,12 +15,16 @@ class LoginResponseModel {
   });
 
   factory LoginResponseModel.fromJson(Map<String, dynamic> json) {
-    var domainList = json['domains'] as List;
-    List<DomainModel> parsedDomainList =
-        domainList.map((d) => DomainModel.fromJson(d)).toList();
+    var domainList = json['domains'] as List?;
+    List<DomainModel> parsedDomainList = [];
+    print("res: $domainList");
+    if (domainList != null) {
+      parsedDomainList =
+          domainList.map((d) => DomainModel.fromJson(d)).toList();
+    }
     return LoginResponseModel(
-        token: json['token'] as String?,
         error: json['error'] as String?,
+        token: json['token'] as String?,
         category: json['category'] as String?,
         domains: parsedDomainList);
   }

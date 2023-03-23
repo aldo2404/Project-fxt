@@ -5,6 +5,7 @@ import 'package:fx_project/layout/alertbox.dart';
 import 'package:fx_project/layout/background_screen.dart';
 import 'package:fx_project/layout/bottomnavigation.dart';
 import 'package:fx_project/layout/buttonfield.dart';
+import 'package:fx_project/layout/presistentbotnavbar.dart';
 import 'package:fx_project/models/login_response_model.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:fx_project/services/dashboardservices.dart';
@@ -19,11 +20,10 @@ class EnvironmentPage extends StatefulWidget {
 
 class EnvironmentPageState extends State<EnvironmentPage> {
   static const storage = FlutterSecureStorage();
+  final List _selectedIndexs = [];
 
   @override
   Widget build(BuildContext context) {
-    bool isSelected = false;
-
     print("domains in environment: ${widget.domains}");
     var domains = widget.domains;
 
@@ -84,15 +84,21 @@ class EnvironmentPageState extends State<EnvironmentPage> {
                     ),
                     itemCount: domains.length,
                     itemBuilder: (context, i, id) {
+                      final isSelected = _selectedIndexs.contains(i);
                       String baseUrls = domains[i].host!;
 
                       return GestureDetector(
                         onTap: () {
                           print('url$id');
                           setState(() {
-                            isSelected = !isSelected;
+                            if (isSelected) {
+                              _selectedIndexs.remove(i);
+                            } else {
+                              _selectedIndexs.add(i);
+                            }
+                            //isSelected = !isSelected;
                           });
-                          print('$baseUrls');
+                          print(baseUrls);
                           baseUrl(baseUrls);
                           DashBoardService(
                             service:
@@ -109,7 +115,7 @@ class EnvironmentPageState extends State<EnvironmentPage> {
                                 ? Border.all(
                                     color:
                                         const Color.fromARGB(255, 230, 81, 0),
-                                    width: 2)
+                                    width: 4)
                                 : null,
                           ),
                           child: Center(
@@ -145,7 +151,7 @@ class EnvironmentPageState extends State<EnvironmentPage> {
                       print('gi_$base');
                       return Navigator.of(context).pushReplacement(
                           MaterialPageRoute(
-                              builder: (_) => const BottomNaviBar()));
+                              builder: (_) => const Persistentnavbar()));
                     } else {
                       print('error');
                       // ignore: use_build_context_synchronously

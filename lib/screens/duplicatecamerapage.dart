@@ -19,9 +19,8 @@ class _DuplicateCameraPageState extends State<DuplicateCameraPage> {
             Icons.arrow_back,
           ),
         ),
-        title: const Center(
-          child: Text("doop camera page"),
-        ),
+        centerTitle: true,
+        title: const Text("doop camera page"),
       ),
       body: const Center(
         child: Text(

@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:fx_project/layout/dashboardbox.dart';
 import 'package:fx_project/models/dashboardresponsemodel.dart';
 import 'package:fx_project/screens/alljobsscreen.dart';
+import 'package:fx_project/screens/createjobsscreen.dart';
 import 'package:fx_project/screens/environmentpage.dart';
+import 'package:fx_project/screens/loginpage.dart';
 import 'package:fx_project/services/dashboardservices.dart';
 
 class DashboardPage extends StatefulWidget {
@@ -49,12 +51,6 @@ class _DashboardPageState extends State<DashboardPage> {
 
     print("emergency: ${bal?.emergency}");
     print("jobs: ${bal?.all_jobs}");
-    t1 = bal?.emergency as int;
-    text1 = t1.toString();
-    t2 = bal?.all_jobs as int;
-    text2 = t2.toString();
-    t3 = bal?.assigned_to_me as int;
-    text3 = t3.toString();
 
     return Scaffold(
       appBar: AppBar(
@@ -62,7 +58,10 @@ class _DashboardPageState extends State<DashboardPage> {
         leading: Image.asset('assets/image/splashlogo.png'),
         actions: [
           IconButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(builder: (_) => const LoginPage()));
+              },
               icon: Icon(Icons.power_settings_new, color: Colors.orange[900]))
         ],
       ),
@@ -72,6 +71,12 @@ class _DashboardPageState extends State<DashboardPage> {
             future: getUsers(),
             builder: (context, snapshot) {
               if (bal != null) {
+                t1 = bal?.emergency as int;
+                text1 = t1.toString();
+                t2 = bal?.all_jobs as int;
+                text2 = t2.toString();
+                t3 = bal?.assigned_to_me as int;
+                text3 = t3.toString();
                 return Column(
                   children: [
                     Padding(
@@ -85,7 +90,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                   childAspectRatio: 2 / 3,
                                   crossAxisSpacing: 20,
                                   mainAxisSpacing: 20,
-                                  mainAxisExtent: 280),
+                                  mainAxisExtent: 265),
                           children: [
                             dashBoardBox(Colors.amber[50], Icons.warning,
                                 Colors.orange[900], text1, "Emergency", () {}),
@@ -112,7 +117,10 @@ class _DashboardPageState extends State<DashboardPage> {
                           height: 40,
                           width: 333,
                           child: ElevatedButton.icon(
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (_) => const CreateJobsScreen()));
+                            },
                             style: ElevatedButton.styleFrom(
                                 backgroundColor:
                                     const Color.fromARGB(255, 1, 32, 58)),
@@ -134,7 +142,7 @@ class _DashboardPageState extends State<DashboardPage> {
                   ],
                 );
               } else if (snapshot.hasError) {
-                return Text('result:${snapshot.data}');
+                return Text('result: ${snapshot.data}');
               } else {
                 return const Center(
                   child: CircularProgressIndicator(),

@@ -74,10 +74,14 @@ class _LoginPageState extends State<LoginPage> {
                                 color: Colors.white)),
                         const SizedBox(height: 30),
                         ReuseTextFields(
+                          width: 300,
+                          textAlign: TextAlign.center,
                           keyboardtypes: TextInputType.emailAddress,
                           text: "Username",
                           inputfieldcolor: Colors.white,
                           password: false,
+                          readOnly: false,
+                          maxLines: 1,
                           controller: emailcontroller,
                           validate: ((value) {
                             if (value!.isEmpty ||
@@ -89,10 +93,14 @@ class _LoginPageState extends State<LoginPage> {
                           }),
                         ),
                         ReuseTextFields(
+                          width: 300,
+                          textAlign: TextAlign.center,
                           keyboardtypes: TextInputType.visiblePassword,
                           text: "Password",
                           inputfieldcolor: Colors.white,
                           password: passToggle,
+                          readOnly: false,
+                          maxLines: 1,
                           controller: passcontroller,
                           suffixs: InkWell(
                             onTap: () {
@@ -104,8 +112,8 @@ class _LoginPageState extends State<LoginPage> {
                               padding: const EdgeInsets.only(right: 4.0),
                               child: Icon(
                                 passToggle
-                                    ? Icons.visibility
-                                    : Icons.visibility_off,
+                                    ? Icons.visibility_off
+                                    : Icons.visibility,
                                 size: 16.0,
                               ),
                             ),
@@ -165,7 +173,7 @@ class _LoginPageState extends State<LoginPage> {
                             print(emailcontroller.text.toString());
                             print(passcontroller.text.toString());
 
-                            print("data store sucess");
+                            print("data store success");
                           } else {
                             print("Enter valied data");
                           }
@@ -216,15 +224,12 @@ class _LoginPageState extends State<LoginPage> {
   void buildBlocListener(context, state) {
     if (state is LoginCompleted) {
       final data = state.loginModel;
-      print(" data_$data");
+
       print("data error_${data.error}");
       if (data.error != null) {
         print('${data.error}');
         ReuseAlertDialogBox().alertDialog(context, "Alert", data.error!);
       } else {
-        // for (var d in data as List<DomainModel>) {
-        //   print("${d.tojson()}");
-        // }
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(
               builder: (_) =>

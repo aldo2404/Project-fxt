@@ -13,12 +13,14 @@ class _MorePageState extends State<MorePage> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          onPressed: () => Navigator.of(context).pop(),
+          onPressed: () =>
+              Navigator.of(context).popUntil((route) => route.isFirst),
           icon: const Icon(
             Icons.arrow_back,
           ),
         ),
-        title: const Center(child: Text("More")),
+        centerTitle: true,
+        title: const Text("More"),
       ),
       body: Column(
         children: const [

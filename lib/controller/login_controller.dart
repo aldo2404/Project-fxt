@@ -1,3 +1,5 @@
+import 'dart:convert';
+import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:fx_project/models/login_model.dart';
@@ -24,9 +26,9 @@ class LoginCubit extends Cubit<LoginState> {
     //print("Login Controller: response ${json.encode(response)}");
 
     if (response is LoginResponseModel) {
+      print("controller ${response.error}");
       if (response.error != '') {
-        print("token is available:");
-        LoginService.storeToken(response.token!);
+        LoginService.storeToken(response.token ?? '');
         emit(LoginCompleted(response));
       } else {
         print("error encountered");

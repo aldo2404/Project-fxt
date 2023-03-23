@@ -65,19 +65,24 @@ class _PasswordForgotPageState extends State<PasswordForgotPage> {
                   ),
                   const SizedBox(height: 48),
                   ReuseTextFields(
+                    width: 300,
+                    textAlign: TextAlign.center,
                     keyboardtypes: TextInputType.emailAddress,
                     text: "Email",
                     inputfieldcolor: Colors.white,
                     password: false,
-                    controller: emailcontroller,
-                    validate: ((value) {
-                      if (value!.isEmpty ||
-                          !RegExp(r"^[\w-\.]+@([\w-]+\.)+[\w]{2}")
-                              .hasMatch(value)) {
-                        return 'Enter correct email id';
-                      }
-                      return null;
-                    }),
+                    readOnly: false,
+                    maxLines: 1,
+                    //controller: emailcontroller,
+
+                    // validate: ((value) {
+                    //   if (value!.isEmpty ||
+                    //       !RegExp(r"^[\w-\.]+@([\w-]+\.)+[\w]{2}")
+                    //           .hasMatch(value)) {
+                    //     return 'Enter correct email id';
+                    //   }
+                    //   return null;
+                    // }),
                   ),
                   GestureDetector(
                     child: clickButton(

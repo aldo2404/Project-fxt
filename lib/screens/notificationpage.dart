@@ -20,14 +20,12 @@ class _NotificationPageState extends State<NotificationPage> {
           ),
         ),
         centerTitle: true,
-        title: const Center(
-          child: Text("Notifications"),
-        ),
+        title: const Text("Notifications"),
       ),
       body: Container(),
       floatingActionButton: FloatingActionButton(
         onPressed: () {},
-        child: const Icon(Icons.camera_alt),
+        child: const Icon(Icons.add),
       ),
     );
   }
