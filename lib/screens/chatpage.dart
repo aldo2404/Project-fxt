@@ -14,7 +14,8 @@ class _ChatPageState extends State<ChatPage> {
       appBar: AppBar(
         backgroundColor: Colors.orange[900],
         leading: IconButton(
-          onPressed: () => Navigator.of(context).pop(),
+          onPressed: () => Navigator.of(context)
+              .pop(MaterialPageRoute(builder: (_) => const ChatPage())),
           icon: const Icon(
             Icons.arrow_back,
           ),

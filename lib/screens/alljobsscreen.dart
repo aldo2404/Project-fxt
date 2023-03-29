@@ -15,40 +15,70 @@ class AllJobsScreen extends StatefulWidget {
 
 class _AllJobsScreenState extends State<AllJobsScreen> {
   AllJobsResponesModel? allJob;
-  String page = '';
-  String nextPage = '&page';
-  bool loading = true;
-  final ScrollController scrollController = ScrollController();
+  //int page = 1;
+  // int? count ;
+  int page = 1;
+  List<Result>? result = [];
+  bool loading = false, allLoaded = false;
+  final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
+    //String url = '';
     _getData();
+    //handleNext();
+    _scrollController.addListener(_scrollListner);
     super.initState();
   }
 
-  void _getData() async {
+  // _urlData() async {
+  //   dynamic baseurl1 = await EnvironmentPageState.getBaseurl() as dynamic;
+  //   String baseurl = 'https://$baseurl1/v1/jobs/?filter=active';
+  //   print(baseurl);
+  //   return baseurl;
+  // }
+
+  Future<void> _getData() async {
+    setState(() {
+      loading = true;
+    });
     dynamic baseurl1 = await EnvironmentPageState.getBaseurl() as dynamic;
+    print(page);
     allJob = await (AllJobsServices(
       service: Dio(BaseOptions(
-          baseUrl: 'https://${baseurl1}/v1/jobs/?filter=active$page')),
+          baseUrl: 'https://$baseurl1/v1/jobs/?filter=active&page=$page')),
     ).allJobsService());
-    Future.delayed(const Duration(seconds: 0)).then((value) => setState(
-          () {},
-        ));
 
+    //int incCount = pageCount + 1;
+    Future.delayed(const Duration(seconds: 0)).then((value) => setState(
+          () {
+            //allJob = allJob;
+            result = result! + allJob!.results!;
+            // loading = false;
+            //pageCount = incCount;
+          },
+        ));
     print("count: ${allJob?.count}");
     print("next: ${allJob!.next}");
-    print(allJob);
+    print("alljobs_$allJob");
   }
 
-  void handleNext() {
-    scrollController.addListener(() async {
-      if (scrollController.position.maxScrollExtent ==
-          scrollController.position.pixels) {
-        //fetchData(offset);
-        const CircularProgressIndicator();
-      }
-    });
+  Future<void> _scrollListner() async {
+    if (loading) return;
+    if (_scrollController.position.pixels >=
+        _scrollController.position.maxScrollExtent) {
+      page = page + 1;
+      print(page);
+      setState(() {
+        loading = true;
+      });
+      await _getData();
+      // setState(() {
+      //   loading = false;
+      // });
+    }
+    print("next: ${allJob!.next}");
+    print(allJob);
   }
 
   @override
@@ -71,7 +101,8 @@ class _AllJobsScreenState extends State<AllJobsScreen> {
         child: FutureBuilder(
             future: getUsers(),
             builder: (context, snapshot) {
-              if (allJob != null) {
+              if (result != null) {
+                print(result!.length);
                 return Column(
                   children: [
                     Row(
@@ -98,42 +129,39 @@ class _AllJobsScreenState extends State<AllJobsScreen> {
                       ],
                     ),
                     const SizedBox(height: 10),
-                    Flexible(
+                    Expanded(
                       child: ListView.builder(
-                          controller: scrollController,
-                          itemCount: allJob!.results!.length,
+                          controller: _scrollController,
+                          itemCount: result!.length,
+
+                          //loading ? result!.length + 1 : result!.length,
                           itemBuilder: (context, index) {
-                            var property =
-                                allJob?.results![index].property.toString();
+                            var property = result![index].property.toString();
                             var serviceType =
-                                allJob?.results![index].serviceType.toString();
-                            var id = allJob?.results![index].id.toString();
-                            // var name =
-                            //     allJob?.results![index].stage.name.toString();
+                                result![index].serviceType.toString();
+                            var id = result![index].id.toString();
+                            var name = result![index].stage.name.toString();
 
-                            var issueType =
-                                allJob?.results![index].issueType.toString();
-                            var priority =
-                                allJob?.results![index].priority.toString();
+                            var issueType = result![index].issueType.toString();
+                            var priority = result![index].priority.toString();
                             var unit = allJob?.results![index].unit.toString();
-                            var category =
-                                allJob?.results![index].category.toString();
+                            var category = result![index].category.toString();
 
-                            if (index == allJob!.results!.length) {
-                              return loading
-                                  ? Container(
-                                      height: 100,
-                                      child: const Center(
-                                        child: CircularProgressIndicator(
-                                          strokeWidth: 2,
-                                        ),
-                                      ),
-                                    )
-                                  : Container();
+                            if (index == result!.length) {
+                              print(index);
+
+                              return const SizedBox(
+                                height: 50,
+                                child: Center(
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                  ),
+                                ),
+                              );
                             }
-
-                            return cardListContainer(property!, serviceType!,
-                                id!, issueType!, priority!, unit!, category!);
+                            print('${result!.length}');
+                            return cardListContainer(property, serviceType, id,
+                                name, issueType, priority, unit, category);
                           }),
                     )
                   ],
@@ -160,6 +188,7 @@ class _AllJobsScreenState extends State<AllJobsScreen> {
     ).allJobsService());
     setState(() {
       allJob = allJob;
+      print(allJob!.results!.length);
     });
   }
 }

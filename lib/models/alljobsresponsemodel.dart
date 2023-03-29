@@ -1,4 +1,12 @@
+import 'dart:convert';
+
 import 'package:json_annotation/json_annotation.dart';
+
+AllJobsResponesModel allJobsResponesModelFromJson(String str) =>
+    AllJobsResponesModel.fromJson(json.decode(str));
+
+String allJobsResponesModelToJson(AllJobsResponesModel data) =>
+    json.encode(data.toJson());
 
 @JsonSerializable()
 class AllJobsResponesModel {
@@ -14,56 +22,55 @@ class AllJobsResponesModel {
   });
 
   factory AllJobsResponesModel.fromJson(Map<String, dynamic> json) {
-    var resultJson = json["results"] as List;
-    List<Result> resultList =
-        resultJson.map((x) => Result.fromJson(x)).toList();
+    // var resultJson = json["results"] as List;
+    // List<Result> resultList =
+    //     resultJson.map((x) => Result.fromJson(x)).toList();
     return AllJobsResponesModel(
       count: json['count'] as int?,
       next: json['next'] as String?,
       previous: json['previous'] as dynamic,
-      results: resultList,
-      // List<Result>.from(json["results"].map((x) => Result.fromJson(x))),
+      results:
+          List<Result>.from(json["results"].map((x) => Result.fromJson(x))),
     );
   }
   Map<String, dynamic> toJson() => {
         "count": count,
         "next": next,
         "previous": previous,
-        "results": results,
-        //List<dynamic>.from(results.map((x) => x.toJson())),
+        "results": List<dynamic>.from(results!.map((x) => x.toJson())),
       };
 }
 
 class Result {
-  int id;
+  int? id;
   bool courtesyJob;
   Type type;
   String description;
-  String issueType;
-  String category;
-  String property;
+  String? issueType;
+  String? category;
+  String? property;
   String status;
   Stage stage;
   RequestType requestType;
-  String unit;
-  String priority;
-  String serviceType;
+  String? unit;
+  String? priority;
+  String? serviceType;
   Source source;
   RequestedBy requestedBy;
   Result({
-    required this.id,
+    this.id,
     required this.courtesyJob,
     required this.type,
     required this.description,
-    required this.issueType,
-    required this.category,
-    required this.property,
+    this.issueType,
+    this.category,
+    this.property,
     required this.status,
     required this.stage,
     required this.requestType,
-    required this.unit,
-    required this.priority,
-    required this.serviceType,
+    this.unit,
+    this.priority,
+    this.serviceType,
     required this.source,
     required this.requestedBy,
   });
@@ -111,20 +118,20 @@ class Result {
 class Stage {
   Stage({
     required this.id,
-    required this.name,
+    this.name,
   });
 
   String id;
-  Name name;
+  String? name;
 
   factory Stage.fromJson(Map<String, dynamic> json) => Stage(
         id: json["id"],
-        name: nameValues.map[json["name"]]!,
+        name: json["name"],
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
-        "name": nameValues.reverse[name],
+        "name": name,
       };
 }
 

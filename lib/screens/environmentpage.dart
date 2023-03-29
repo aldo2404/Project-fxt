@@ -144,19 +144,18 @@ class EnvironmentPageState extends State<EnvironmentPage> {
                   child: const Text("Enter"),
                   () async {
                     dynamic base = await getBaseurl() as dynamic;
-                    if (base == null) {
-                      print('=null_$base');
-                      const CircularProgressIndicator.adaptive();
-                    } else if (base != null) {
+
+                    if (base != null) {
                       print('gi_$base');
+                      // ignore: use_build_context_synchronously
                       return Navigator.of(context).pushReplacement(
                           MaterialPageRoute(
                               builder: (_) => const Persistentnavbar()));
                     } else {
                       print('error');
                       // ignore: use_build_context_synchronously
-                      ReuseAlertDialogBox().alertDialog(
-                          context, "Alert", "Kindly select any environment");
+                      ReuseAlertDialogBox().alertDialog(context, "Alert",
+                          "Kindly select correct environment");
                     }
                   },
                 ),

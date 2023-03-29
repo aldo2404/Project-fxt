@@ -25,58 +25,61 @@ class _PersistentnavbarState extends State<Persistentnavbar> {
 
   @override
   Widget build(BuildContext context) {
-    return PersistentTabView(
-      context,
-      controller: _controller,
-      screens: const [
-        DashboardPage(),
-        ChatPage(),
-        //CameraPage(camera: firstCamera),
-        DuplicateCameraPage(),
-        NotificationPage(),
-        MorePage(),
-      ],
-      items: [
-        PersistentBottomNavBarItem(
-            icon: const Icon(Icons.dashboard),
-            title: 'Dashboard',
-            activeColorPrimary: const Color.fromARGB(255, 230, 81, 0),
-            inactiveColorPrimary: const Color.fromARGB(255, 1, 21, 88)),
-        PersistentBottomNavBarItem(
-            icon: const Icon(Icons.chat),
-            title: 'Chat',
-            activeColorPrimary: const Color.fromARGB(255, 230, 81, 0),
-            inactiveColorPrimary: const Color.fromARGB(255, 1, 21, 88)),
-        PersistentBottomNavBarItem(
-            icon: const Icon(Icons.camera_alt),
-            title: 'Photo',
-            activeColorPrimary: const Color.fromARGB(255, 230, 81, 0),
-            inactiveColorPrimary: const Color.fromARGB(255, 1, 21, 88)),
-        PersistentBottomNavBarItem(
-            icon: const Icon(Icons.notifications),
-            title: 'Notification',
-            activeColorPrimary: const Color.fromARGB(255, 230, 81, 0),
-            inactiveColorPrimary: const Color.fromARGB(255, 1, 21, 88)),
-        PersistentBottomNavBarItem(
-            icon: const Icon(Icons.menu),
-            title: 'Menu',
-            activeColorPrimary: const Color.fromARGB(255, 230, 81, 0),
-            inactiveColorPrimary: const Color.fromARGB(255, 1, 21, 88))
-      ],
-      confineInSafeArea: true,
-      backgroundColor: Colors.white,
-      handleAndroidBackButtonPress: true,
-      resizeToAvoidBottomInset: true,
-      stateManagement: true,
-      hideNavigationBarWhenKeyboardShows: true,
-      popAllScreensOnTapOfSelectedTab: true,
-      popActionScreens: PopActionScreensType.once,
-      screenTransitionAnimation: const ScreenTransitionAnimation(
-        animateTabTransition: true,
-        curve: Curves.ease,
-        duration: Duration(milliseconds: 200),
+    return Container(
+      decoration: const BoxDecoration(border: Border(top: BorderSide())),
+      child: PersistentTabView(
+        context,
+        controller: _controller,
+        screens: const [
+          DashboardPage(),
+          ChatPage(),
+          //CameraPage(camera: firstCamera),
+          DuplicateCameraPage(),
+          NotificationPage(),
+          MorePage(),
+        ],
+        items: [
+          PersistentBottomNavBarItem(
+              icon: const Icon(Icons.dashboard),
+              title: 'Dashboard',
+              activeColorPrimary: const Color.fromARGB(255, 230, 81, 0),
+              inactiveColorPrimary: const Color.fromARGB(255, 1, 21, 88)),
+          PersistentBottomNavBarItem(
+              icon: const Icon(Icons.chat),
+              title: 'Chat',
+              activeColorPrimary: const Color.fromARGB(255, 230, 81, 0),
+              inactiveColorPrimary: const Color.fromARGB(255, 1, 21, 88)),
+          PersistentBottomNavBarItem(
+              icon: const Icon(Icons.camera_alt),
+              title: 'Photo',
+              activeColorPrimary: const Color.fromARGB(255, 230, 81, 0),
+              inactiveColorPrimary: const Color.fromARGB(255, 1, 21, 88)),
+          PersistentBottomNavBarItem(
+              icon: const Icon(Icons.notifications),
+              title: 'Notification',
+              activeColorPrimary: const Color.fromARGB(255, 230, 81, 0),
+              inactiveColorPrimary: const Color.fromARGB(255, 1, 21, 88)),
+          PersistentBottomNavBarItem(
+              icon: const Icon(Icons.menu),
+              title: 'Menu',
+              activeColorPrimary: const Color.fromARGB(255, 230, 81, 0),
+              inactiveColorPrimary: const Color.fromARGB(255, 1, 21, 88))
+        ],
+        confineInSafeArea: true,
+        backgroundColor: Colors.white,
+        handleAndroidBackButtonPress: true,
+        resizeToAvoidBottomInset: true,
+        stateManagement: true,
+        hideNavigationBarWhenKeyboardShows: true,
+        popAllScreensOnTapOfSelectedTab: false,
+        popActionScreens: PopActionScreensType.once,
+        screenTransitionAnimation: const ScreenTransitionAnimation(
+          animateTabTransition: true,
+          curve: Curves.ease,
+          duration: Duration(milliseconds: 200),
+        ),
+        navBarStyle: NavBarStyle.simple,
       ),
-      navBarStyle: NavBarStyle.neumorphic,
     );
   }
 }
