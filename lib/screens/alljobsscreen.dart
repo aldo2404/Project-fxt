@@ -15,8 +15,7 @@ class AllJobsScreen extends StatefulWidget {
 
 class _AllJobsScreenState extends State<AllJobsScreen> {
   AllJobsResponesModel? allJob;
-  //int page = 1;
-  // int? count ;
+  bool hasMore = false;
   int page = 1;
   List<Result>? result = [];
   bool loading = false, allLoaded = false;
@@ -31,6 +30,11 @@ class _AllJobsScreenState extends State<AllJobsScreen> {
     super.initState();
   }
 
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
   // _urlData() async {
   //   dynamic baseurl1 = await EnvironmentPageState.getBaseurl() as dynamic;
   //   String baseurl = 'https://$baseurl1/v1/jobs/?filter=active';
@@ -39,46 +43,36 @@ class _AllJobsScreenState extends State<AllJobsScreen> {
   // }
 
   Future<void> _getData() async {
-    setState(() {
-      loading = true;
-    });
+    if (loading) return;
+    loading = true;
+    const limit = 20;
     dynamic baseurl1 = await EnvironmentPageState.getBaseurl() as dynamic;
     print(page);
     allJob = await (AllJobsServices(
       service: Dio(BaseOptions(
-          baseUrl: 'https://$baseurl1/v1/jobs/?filter=active&page=$page')),
+          baseUrl:
+              'https://$baseurl1/v1/jobs/?filter=active?_limit=$limit&page=$page')),
     ).allJobsService());
-
-    //int incCount = pageCount + 1;
-    Future.delayed(const Duration(seconds: 0)).then((value) => setState(
-          () {
-            //allJob = allJob;
-            result = result! + allJob!.results!;
-            // loading = false;
-            //pageCount = incCount;
-          },
-        ));
+    Future.delayed(const Duration(seconds: 0)).then((value) => setState(() {
+          page++;
+          loading = false;
+          if (allJob!.results!.length < limit) {
+            hasMore = false;
+          }
+          result!.addAll(allJob!.results!);
+        }));
     print("count: ${allJob?.count}");
     print("next: ${allJob!.next}");
     print("alljobs_$allJob");
   }
 
   Future<void> _scrollListner() async {
-    if (loading) return;
-    if (_scrollController.position.pixels >=
+    if (_scrollController.offset ==
         _scrollController.position.maxScrollExtent) {
-      page = page + 1;
-      print(page);
-      setState(() {
-        loading = true;
-      });
       await _getData();
-      // setState(() {
-      //   loading = false;
-      // });
     }
-    print("next: ${allJob!.next}");
-    print(allJob);
+    // print("next: ${allJob!.next}");
+    // print(allJob);
   }
 
   @override
@@ -136,32 +130,42 @@ class _AllJobsScreenState extends State<AllJobsScreen> {
 
                           //loading ? result!.length + 1 : result!.length,
                           itemBuilder: (context, index) {
-                            var property = result![index].property.toString();
-                            var serviceType =
-                                result![index].serviceType.toString();
-                            var id = result![index].id.toString();
-                            var name = result![index].stage.name.toString();
+                            if (index < result!.length) {
+                              var property = result![index].property.toString();
+                              var serviceType =
+                                  result![index].serviceType.toString();
+                              var id = result![index].id.toString();
+                              var name = result![index].stage.name.toString();
 
-                            var issueType = result![index].issueType.toString();
-                            var priority = result![index].priority.toString();
-                            var unit = allJob?.results![index].unit.toString();
-                            var category = result![index].category.toString();
+                              var issueType =
+                                  result![index].issueType.toString();
+                              var priority = result![index].priority.toString();
+                              var unit =
+                                  allJob?.results![index].unit.toString();
+                              var category = result![index].category.toString();
+                              print(
+                                  '${result!.length}_index_${result!.indexWhere((element) => false)}');
 
-                            if (index == result!.length) {
-                              print(index);
-
-                              return const SizedBox(
-                                height: 50,
+                              return cardListContainer(
+                                  property,
+                                  serviceType,
+                                  id,
+                                  name,
+                                  issueType,
+                                  priority,
+                                  unit,
+                                  category);
+                            } else {
+                              return Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 32),
                                 child: Center(
-                                  child: CircularProgressIndicator(
-                                    strokeWidth: 2,
-                                  ),
+                                  child: hasMore
+                                      ? const CircularProgressIndicator()
+                                      : const Text('No more data to load '),
                                 ),
                               );
                             }
-                            print('${result!.length}');
-                            return cardListContainer(property, serviceType, id,
-                                name, issueType, priority, unit, category);
                           }),
                     )
                   ],
@@ -187,8 +191,10 @@ class _AllJobsScreenState extends State<AllJobsScreen> {
           BaseOptions(baseUrl: 'https://${baseurl1}/v1/jobs/?filter=active')),
     ).allJobsService());
     setState(() {
-      allJob = allJob;
-      print(allJob!.results!.length);
+      loading = false;
+      hasMore = true;
+      page = 1;
     });
+    _getData();
   }
 }

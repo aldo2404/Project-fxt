@@ -83,6 +83,7 @@ class _LoginPageState extends State<LoginPage> {
                           readOnly: false,
                           maxLines: 1,
                           controller: emailcontroller,
+                          helperText: '',
                           validate: ((value) {
                             if (value!.isEmpty ||
                                 !RegExp(r'^.+@[a-zA-Z]+\.{1}[a-zA-Z]+(\.{0,1}[a-zA-Z]+)$')
@@ -102,6 +103,7 @@ class _LoginPageState extends State<LoginPage> {
                           readOnly: false,
                           maxLines: 1,
                           controller: passcontroller,
+                          helperText: '',
                           suffixs: InkWell(
                             onTap: () {
                               setState(() {

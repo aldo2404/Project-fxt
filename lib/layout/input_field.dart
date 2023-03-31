@@ -1,5 +1,6 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 // ignore: must_be_immutable
 class ReuseTextFields extends StatelessWidget {
@@ -11,12 +12,11 @@ class ReuseTextFields extends StatelessWidget {
   int maxLines;
   TextEditingController? controller;
   final FormFieldValidator? validate;
-  //List<TextInputFormatter>? inputformatters;
   TextInputType? keyboardtypes;
   Function(String?)? onsaved;
   Widget? suffixs;
   double? height;
-  double width;
+  double? width;
   String? helperText;
   TextAlign? textAlign;
 
@@ -30,12 +30,11 @@ class ReuseTextFields extends StatelessWidget {
     required this.maxLines,
     this.validate,
     this.readOnly,
-    //this.inputformatters,
     this.keyboardtypes,
     this.onsaved,
     this.suffixs,
     this.height,
-    required this.width,
+    this.width,
     this.helperText,
     required this.textAlign,
   }) : super(key: key);
@@ -53,10 +52,7 @@ class ReuseTextFields extends StatelessWidget {
           obscureText: password!,
           readOnly: readOnly!,
           maxLines: maxLines,
-          // textDirection: TextDirection.ltr,
-          //inputFormatters: inputformatters,
           validator: validate,
-          //enableSuggestions: password,
           onSaved: onsaved,
           autocorrect: autocorrect,
           textAlign: textAlign!,
@@ -68,13 +64,42 @@ class ReuseTextFields extends StatelessWidget {
             border: const OutlineInputBorder(),
             contentPadding:
                 const EdgeInsets.only(bottom: 10, top: 10, left: 10),
-            helperText: '',
+            helperText: helperText,
             hintTextDirection: TextDirection.ltr,
             hintText: text,
             hintStyle: const TextStyle(fontSize: 14, color: Colors.black45),
             suffix: suffixs,
           ),
         ),
+      ),
+    );
+  }
+}
+
+class SelectionOptionField extends StatelessWidget {
+  final List<DropdownMenuItem<String>>? items;
+  Function(String?) onChange;
+
+  SelectionOptionField({
+    super.key,
+    required this.items,
+    required this.onChange,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(10.0),
+      child: DropdownButtonFormField(
+        items: items,
+        onChanged: onChange,
+        icon: const Icon(
+          Icons.keyboard_arrow_down_sharp,
+          size: 24,
+        ),
+        decoration: const InputDecoration(
+            border: OutlineInputBorder(), label: Text("select")),
+        borderRadius: BorderRadius.circular(7),
       ),
     );
   }

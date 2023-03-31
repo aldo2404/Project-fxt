@@ -72,17 +72,17 @@ class _PasswordForgotPageState extends State<PasswordForgotPage> {
                     inputfieldcolor: Colors.white,
                     password: false,
                     readOnly: false,
+                    helperText: '',
                     maxLines: 1,
-                    //controller: emailcontroller,
-
-                    // validate: ((value) {
-                    //   if (value!.isEmpty ||
-                    //       !RegExp(r"^[\w-\.]+@([\w-]+\.)+[\w]{2}")
-                    //           .hasMatch(value)) {
-                    //     return 'Enter correct email id';
-                    //   }
-                    //   return null;
-                    // }),
+                    controller: emailcontroller,
+                    validate: ((value) {
+                      if (value!.isEmpty ||
+                          !RegExp(r"^[\w-\.]+@([\w-]+\.)+[\w]{2}")
+                              .hasMatch(value)) {
+                        return 'Enter correct email id';
+                      }
+                      return null;
+                    }),
                   ),
                   GestureDetector(
                     child: clickButton(
