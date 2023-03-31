@@ -28,7 +28,7 @@ class _CreateJobsScreenState extends State<CreateJobsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey.shade200,
+      //backgroundColor: Colors.grey.shade200,
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 1, 48, 92),
         leading: IconButton(
@@ -45,25 +45,50 @@ class _CreateJobsScreenState extends State<CreateJobsScreen> {
               ))
         ],
       ),
-      body: Stepper(
-        type: StepperType.horizontal,
-        steps: getSteps(),
-        currentStep: currentStep,
-        onStepContinue: () {
-          final isLastStep = currentStep == getSteps().length - 1;
-          if (isLastStep) {
-            print('Steps Completed');
-          } else {
-            setState(() => currentStep += 1);
-          }
-        },
-        onStepCancel:
-            currentStep == 0 ? null : () => setState(() => currentStep -= 1),
+      body: Theme(
+        data: Theme.of(context).copyWith(
+            colorScheme: const ColorScheme.light(
+                primary: Color.fromARGB(255, 230, 81, 0))),
+        child: Stepper(
+          type: StepperType.horizontal,
+          steps: getSteps(),
+          currentStep: currentStep,
+          onStepContinue: () {
+            final isLastStep = currentStep == getSteps().length - 1;
+            if (isLastStep) {
+              print('Steps Completed');
+            } else {
+              setState(() => currentStep += 1);
+            }
+          },
+          onStepCancel:
+              currentStep == 0 ? null : () => setState(() => currentStep -= 1),
+          controlsBuilder: (BuildContext context, ControlsDetails details) {
+            final isLastStep = currentStep == getSteps().length - 1;
+
+            return Container(
+              margin: const EdgeInsets.only(top: 50),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: ClickButton(
+                      onpressed: details.onStepContinue,
+                      child: Text(isLastStep ? 'CONFIRM' : 'NEXT'),
+                    ),
+                  ),
+                  if (currentStep != 0)
+                    Expanded(
+                      child: ClickButton(
+                        onpressed: details.onStepCancel,
+                        child: const Text('BACK'),
+                      ),
+                    ),
+                ],
+              ),
+            );
+          },
+        ),
       ),
-      // SafeArea(
-      //     maintainBottomViewPadding: true,
-      //     child:
-      // ),
     );
   }
 
@@ -72,10 +97,11 @@ class _CreateJobsScreenState extends State<CreateJobsScreen> {
             state: currentStep > 0 ? StepState.complete : StepState.indexed,
             isActive: currentStep >= 0,
             title: const Text('1st step'),
-            content: Column(
-              children: [
-                Container(
-                  color: Colors.white,
+            content: SafeArea(
+              maintainBottomViewPadding: true,
+              child: Container(
+                color: Colors.white,
+                child: Expanded(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -163,22 +189,12 @@ class _CreateJobsScreenState extends State<CreateJobsScreen> {
                     ],
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Align(
-                    alignment: Alignment.bottomCenter,
-                    child: clickButton(
-                      () {},
-                      child: const Text("Next"),
-                    ),
-                  ),
-                )
-              ],
+              ),
             )),
         Step(
           state: currentStep > 1 ? StepState.complete : StepState.indexed,
           isActive: currentStep >= 1,
-          title: Text('2st step'),
+          title: const Text('2st step'),
           content: Container(
             color: Colors.white,
             child: Column(

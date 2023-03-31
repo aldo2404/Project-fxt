@@ -155,31 +155,32 @@ class _LoginPageState extends State<LoginPage> {
                             }),
                           ),
                         ),
-                        clickButton(
+                        ClickButton(
                             child: state is LoginLoading
                                 ? const SizedBox(
                                     height: 20,
                                     width: 20,
                                     child: CircularProgressIndicator.adaptive())
-                                : const Text('Log In'), () {
-                          if (emailcontroller.text.isEmpty ||
-                              passcontroller.text.isEmpty) {
-                            ReuseAlertDialogBox().alertDialog(
-                                context, "Alert", "please enter valid data");
-                          }
-                          if (formfield.currentState!.validate()) {
-                            context.read<LoginCubit>().onPressedLogin(
-                                emailcontroller, passcontroller);
-                            login();
+                                : const Text('Log In'),
+                            onpressed: () {
+                              if (emailcontroller.text.isEmpty ||
+                                  passcontroller.text.isEmpty) {
+                                ReuseAlertDialogBox().alertDialog(context,
+                                    "Alert", "please enter valid data");
+                              }
+                              if (formfield.currentState!.validate()) {
+                                context.read<LoginCubit>().onPressedLogin(
+                                    emailcontroller, passcontroller);
+                                login();
 
-                            print(emailcontroller.text.toString());
-                            print(passcontroller.text.toString());
+                                print(emailcontroller.text.toString());
+                                print(passcontroller.text.toString());
 
-                            print("data store success");
-                          } else {
-                            print("Enter valied data");
-                          }
-                        }),
+                                print("data store success");
+                              } else {
+                                print("Enter valied data");
+                              }
+                            }),
                         Container(
                           width: 300,
                           padding: const EdgeInsets.only(top: 10, bottom: 0),
@@ -189,9 +190,9 @@ class _LoginPageState extends State<LoginPage> {
                             textAlign: TextAlign.center,
                           ),
                         ),
-                        clickButton(
+                        ClickButton(
                           child: const Text("Log In with SSO"),
-                          () {},
+                          onpressed: () {},
                         ),
                         Align(
                           alignment: Alignment.bottomCenter,

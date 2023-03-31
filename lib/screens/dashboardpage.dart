@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:fx_project/layout/dashboardbox.dart';
 import 'package:fx_project/models/dashboardresponsemodel.dart';
+import 'package:fx_project/screens/alljobs_screen/alljobsscreen2.dart';
 import 'package:fx_project/screens/alljobsscreen.dart';
 import 'package:fx_project/screens/createjobsscreen.dart';
 import 'package:fx_project/screens/environmentpage.dart';
@@ -103,7 +104,7 @@ class _DashboardPageState extends State<DashboardPage> {
                               setState(() {
                                 Navigator.of(context).push(MaterialPageRoute(
                                     builder: (_) =>
-                                        AllJobsScreen(alljobscount: text2)));
+                                        AllJobsScreen2(emergency: text2)));
                               });
                             }),
                             dashBoardBox(Colors.pink[50], Icons.paste_sharp,

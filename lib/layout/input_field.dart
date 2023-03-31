@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 
-// ignore: must_be_immutable
 class ReuseTextFields extends StatelessWidget {
   String text;
   Color inputfieldcolor;
@@ -93,12 +92,14 @@ class SelectionOptionField extends StatelessWidget {
       child: DropdownButtonFormField(
         items: items,
         onChanged: onChange,
+        hint: const Text("select"),
         icon: const Icon(
           Icons.keyboard_arrow_down_sharp,
           size: 24,
         ),
         decoration: const InputDecoration(
-            border: OutlineInputBorder(), label: Text("select")),
+          border: OutlineInputBorder(),
+        ),
         borderRadius: BorderRadius.circular(7),
       ),
     );

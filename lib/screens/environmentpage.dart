@@ -140,9 +140,9 @@ class EnvironmentPageState extends State<EnvironmentPage> {
                   ),
                 ),
                 const SizedBox(height: 20),
-                clickButton(
+                ClickButton(
                   child: const Text("Enter"),
-                  () async {
+                  onpressed: () async {
                     dynamic base = await getBaseurl() as dynamic;
 
                     if (base != null) {

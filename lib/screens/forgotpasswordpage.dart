@@ -85,9 +85,9 @@ class _PasswordForgotPageState extends State<PasswordForgotPage> {
                     }),
                   ),
                   GestureDetector(
-                    child: clickButton(
+                    child: ClickButton(
                       child: const Text("submit"),
-                      () {},
+                      onpressed: () {},
                     ),
                   ),
                 ],

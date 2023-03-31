@@ -134,7 +134,7 @@ class _AllJobsScreenState extends State<AllJobsScreen> {
                               var property = result![index].property.toString();
                               var serviceType =
                                   result![index].serviceType.toString();
-                              var id = result![index].id.toString();
+                              var id = result![index].id!.toInt();
                               var name = result![index].stage.name.toString();
 
                               var issueType =

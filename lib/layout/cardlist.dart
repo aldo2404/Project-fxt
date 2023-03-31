@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 Widget cardListContainer(
     String? property,
     String? serviceType,
-    String? id,
+    int? id,
     String? text,
     String? issueType,
     String? priority,
