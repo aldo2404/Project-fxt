@@ -1,15 +1,16 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:fx_project/models/dashboardresponsemodel.dart';
+import 'package:fx_project/models/createjobmodel.dart';
+import 'package:fx_project/screens/createjobsscreen/createjobsscreen.dart';
 import 'package:fx_project/services/loginservice.dart';
 
-class DashBoardService {
+class CreateJobServices {
   final Dio service;
   static final storage = FlutterSecureStorage();
 
-  DashBoardService({required this.service});
+  CreateJobServices({required this.service});
 
-  Future<DashBoardResponesModel?> dashBoardService() async {
+  Future<CreateJobResponseModel?> createJobService() async {
     dynamic token = await LoginService.getToken();
 
     bool validateStatus(status) {
@@ -21,16 +22,16 @@ class DashBoardService {
         headers: {"Authorization": "Bearer $token", "source": "android"});
 
     final response = await service.get(
-      '/v1/dashboard/',
+      '/v1/properties/dropdown/',
       options: options,
     );
-    print(token);
+
     if (response.statusCode == 200) {
-      print('success');
+      print("response in createjobservice: $response");
     } else {
       print(response.statusCode);
     }
-    print("response in dashboardservice: $response");
-    return DashBoardResponesModel.fromJson(response.data);
+
+    return CreateJobResponseModel.fromJson(response.data);
   }
 }

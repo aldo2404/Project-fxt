@@ -82,6 +82,7 @@ class _LoginPageState extends State<LoginPage> {
                           password: false,
                           readOnly: false,
                           maxLines: 1,
+                          isListSelect: false,
                           controller: emailcontroller,
                           helperText: '',
                           validate: ((value) {
@@ -102,6 +103,7 @@ class _LoginPageState extends State<LoginPage> {
                           password: passToggle,
                           readOnly: false,
                           maxLines: 1,
+                          isListSelect: false,
                           controller: passcontroller,
                           helperText: '',
                           suffixs: InkWell(

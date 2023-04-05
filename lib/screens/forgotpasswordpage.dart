@@ -74,6 +74,7 @@ class _PasswordForgotPageState extends State<PasswordForgotPage> {
                     readOnly: false,
                     helperText: '',
                     maxLines: 1,
+                    isListSelect: false,
                     controller: emailcontroller,
                     validate: ((value) {
                       if (value!.isEmpty ||

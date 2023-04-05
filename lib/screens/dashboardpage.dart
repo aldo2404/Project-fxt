@@ -4,7 +4,7 @@ import 'package:fx_project/layout/dashboardbox.dart';
 import 'package:fx_project/models/dashboardresponsemodel.dart';
 import 'package:fx_project/screens/alljobs_screen/alljobsscreen2.dart';
 import 'package:fx_project/screens/alljobsscreen.dart';
-import 'package:fx_project/screens/createjobsscreen.dart';
+import 'package:fx_project/screens/createjobsscreen/createjobsscreen.dart';
 import 'package:fx_project/screens/environmentpage.dart';
 import 'package:fx_project/screens/loginpage.dart';
 import 'package:fx_project/services/dashboardservices.dart';
