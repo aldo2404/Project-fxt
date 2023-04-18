@@ -1,16 +1,15 @@
+import 'dart:convert';
 import 'package:dio/dio.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:fx_project/models/createjobmodel.dart';
-import 'package:fx_project/screens/createjobsscreen/createjobsscreen.dart';
 import 'package:fx_project/services/loginservice.dart';
 
 class CreateJobServices {
   final Dio service;
-  static final storage = FlutterSecureStorage();
 
   CreateJobServices({required this.service});
 
-  Future<CreateJobResponseModel?> createJobService() async {
+  //Future<CreateJobResponseModel?> createJobService() async {
+  Future<List<dynamic>?> createJobService() async {
     dynamic token = await LoginService.getToken();
 
     bool validateStatus(status) {
@@ -22,16 +21,24 @@ class CreateJobServices {
         headers: {"Authorization": "Bearer $token", "source": "android"});
 
     final response = await service.get(
-      '/v1/properties/dropdown/',
+      '',
       options: options,
     );
 
     if (response.statusCode == 200) {
       print("response in createjobservice: $response");
+      // print("response in createjobservice data: ${response.data}");
     } else {
       print(response.statusCode);
     }
-
-    return CreateJobResponseModel.fromJson(response.data);
+    // Map<String, Map<String, dynamic>> mapresponse = Map.fromIterable(
+    //     response.data,
+    //     key: (item) => item["id"],
+    //     value: (item) => {"name": item["name"], "address": item["address"]});
+    // print("map data : $mapresponse");
+    // List<dynamic> respon = jsonDecode(response.data.toString());
+    //print(response.data);
+    //return CreateJobResponseModel.fromJson(response.data);
+    return (response.data);
   }
 }

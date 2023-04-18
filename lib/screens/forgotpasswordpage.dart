@@ -68,13 +68,12 @@ class _PasswordForgotPageState extends State<PasswordForgotPage> {
                     width: 300,
                     textAlign: TextAlign.center,
                     keyboardtypes: TextInputType.emailAddress,
-                    text: "Email",
+                    hinttext: "Email",
                     inputfieldcolor: Colors.white,
                     password: false,
                     readOnly: false,
                     helperText: '',
                     maxLines: 1,
-                    isListSelect: false,
                     controller: emailcontroller,
                     validate: ((value) {
                       if (value!.isEmpty ||

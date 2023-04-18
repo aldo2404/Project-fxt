@@ -4,7 +4,7 @@ import 'package:fx_project/models/login_response_model.dart';
 
 class LoginService {
   final Dio service;
-  static final storage = FlutterSecureStorage();
+  static const storage = FlutterSecureStorage();
   LoginService({required this.service});
 
   Future<LoginResponseModel?> loginService(loginModel) async {

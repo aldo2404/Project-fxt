@@ -16,6 +16,7 @@ import '../layout/background_screen.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'dart:js';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -77,12 +78,11 @@ class _LoginPageState extends State<LoginPage> {
                           width: 300,
                           textAlign: TextAlign.center,
                           keyboardtypes: TextInputType.emailAddress,
-                          text: "Username",
+                          hinttext: "Username",
                           inputfieldcolor: Colors.white,
                           password: false,
                           readOnly: false,
                           maxLines: 1,
-                          isListSelect: false,
                           controller: emailcontroller,
                           helperText: '',
                           validate: ((value) {
@@ -98,12 +98,11 @@ class _LoginPageState extends State<LoginPage> {
                           width: 300,
                           textAlign: TextAlign.center,
                           keyboardtypes: TextInputType.visiblePassword,
-                          text: "Password",
+                          hinttext: "Password",
                           inputfieldcolor: Colors.white,
                           password: passToggle,
                           readOnly: false,
                           maxLines: 1,
-                          isListSelect: false,
                           controller: passcontroller,
                           helperText: '',
                           suffixs: InkWell(
