@@ -30,7 +30,8 @@ class _CreateJobsScreenState extends State<CreateJobsScreen> {
   List<dynamic>? propertyData = [];
   List<dynamic>? locationData = [];
   List<dynamic>? serviceData = [];
-  bool _isChecked = true;
+  List<dynamic>? locatData = [];
+  final bool _isChecked = true;
 
   List<dynamic>? categoryData = [];
   late bool isListSelect = false;
@@ -262,7 +263,7 @@ class _CreateJobsScreenState extends State<CreateJobsScreen> {
                         textAlign: TextAlign.left,
                         onTap: () async {
                           await showModalBottomSheet(
-                              isScrollControlled: false,
+                              isScrollControlled: true,
                               shape: const RoundedRectangleBorder(
                                   borderRadius: BorderRadius.vertical(
                                       top: Radius.circular(15))),
@@ -328,7 +329,7 @@ class _CreateJobsScreenState extends State<CreateJobsScreen> {
                           ),
                           onTap: () async {
                             await showModalBottomSheet(
-                                isScrollControlled: false,
+                                isScrollControlled: true,
                                 shape: const RoundedRectangleBorder(
                                     borderRadius: BorderRadius.vertical(
                                         top: Radius.circular(15))),
@@ -402,7 +403,7 @@ class _CreateJobsScreenState extends State<CreateJobsScreen> {
                         ),
                         onTap: () async {
                           await showModalBottomSheet(
-                              isScrollControlled: false,
+                              isScrollControlled: true,
                               shape: const RoundedRectangleBorder(
                                   borderRadius: BorderRadius.vertical(
                                       top: Radius.circular(15))),
@@ -412,6 +413,11 @@ class _CreateJobsScreenState extends State<CreateJobsScreen> {
                                   titleText: 'Location',
                                   listData: locationData!,
                                   itemBuilder: (context, index) {
+                                    locatData = locationData![index]['units'];
+                                    for (int index_ = 0;
+                                        index_ <= locatData!.length;
+                                        index_++) {}
+
                                     return Container(
                                         width:
                                             MediaQuery.of(context).size.width *
@@ -422,14 +428,14 @@ class _CreateJobsScreenState extends State<CreateJobsScreen> {
                                         ),
                                         child: ListTile(
                                           title: Text(
-                                            locationData![index]['units']
+                                            locationData![index]['address']
                                                 .toString(),
                                             style: const TextStyle(
                                                 fontWeight: FontWeight.bold,
                                                 fontSize: 12),
                                           ),
                                           subtitle: Text(
-                                            locationData![index]['address']
+                                            locatData![index]['name']
                                                 .toString(),
                                             style: const TextStyle(
                                                 fontWeight: FontWeight.bold,
@@ -519,7 +525,7 @@ class _CreateJobsScreenState extends State<CreateJobsScreen> {
                     controller: TextEditingController(text: printCategory),
                     onTap: () async {
                       await showModalBottomSheet(
-                          isScrollControlled: false,
+                          isScrollControlled: true,
                           shape: const RoundedRectangleBorder(
                               borderRadius: BorderRadius.vertical(
                                   top: Radius.circular(15))),
@@ -570,6 +576,7 @@ class _CreateJobsScreenState extends State<CreateJobsScreen> {
                             fontWeight: FontWeight.bold, fontSize: 20)),
                     trailing: Checkbox(
                         checkColor: Colors.white,
+                        activeColor: Colors.orange[900],
                         side: const BorderSide(
                             width: 2, color: Color.fromARGB(255, 230, 81, 0)),
                         value: _isChecked,

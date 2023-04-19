@@ -58,26 +58,6 @@ class ReuseTextFields extends StatefulWidget {
 }
 
 class ReuseTextFieldsState extends State<ReuseTextFields> {
-  // void onTextFieldTap() {
-  //   print('datalist');
-  //   DropDownState(DropDown(
-  //     bottomSheetTitle: const Text(
-  //       'Service Type',
-  //       style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0),
-  //     ),
-  //     listBuilder: widget.listBuilder,
-  //     data: widget.data ?? [],
-  //     isSearchVisible: widget.isSearchVisible!,
-  //     selectedItems: widget.selectedItems,
-  //   )).showModal(context);
-  // }
-
-  // void onTextFieldList() {
-  //   const DropDownListExample(
-  //     key: Key("name"),
-  //   );
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -127,6 +107,25 @@ class SelectionOptionField extends StatelessWidget {
     required this.items,
     required this.onChange,
   });
+  // void onTextFieldTap() {
+  //   print('datalist');
+  //   DropDownState(DropDown(
+  //     bottomSheetTitle: const Text(
+  //       'Service Type',
+  //       style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0),
+  //     ),
+  //     listBuilder: widget.listBuilder,
+  //     data: widget.data ?? [],
+  //     isSearchVisible: widget.isSearchVisible!,
+  //     selectedItems: widget.selectedItems,
+  //   )).showModal(context);
+  // }
+
+  // void onTextFieldList() {
+  //   const DropDownListExample(
+  //     key: Key("name"),
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {

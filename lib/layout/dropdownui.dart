@@ -68,6 +68,7 @@ class _DropDownUiScreenState extends State<DropDownUiScreen> {
                 ),
                 Expanded(
                   child: ListView.builder(
+                    controller: scrollController,
                     itemCount: widget.listData.length,
                     itemBuilder: widget.itemBuilder,
                     // (context, index) {
