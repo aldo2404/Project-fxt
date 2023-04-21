@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:fx_project/screens/loginpage.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
-import 'package:js/js.dart';
+
 //import 'dart:js';
 
 void main() async {
