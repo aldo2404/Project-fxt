@@ -72,11 +72,9 @@ class _PersistentnavbarState extends State<Persistentnavbar> {
         stateManagement: true,
         hideNavigationBarWhenKeyboardShows: true,
         popAllScreensOnTapOfSelectedTab: false,
-        popActionScreens: PopActionScreensType.once,
+        popActionScreens: PopActionScreensType.all,
         screenTransitionAnimation: const ScreenTransitionAnimation(
           animateTabTransition: true,
-          curve: Curves.ease,
-          duration: Duration(milliseconds: 200),
         ),
         navBarStyle: NavBarStyle.simple,
       ),

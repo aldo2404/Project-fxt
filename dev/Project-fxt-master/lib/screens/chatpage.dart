@@ -35,13 +35,15 @@ class _ChatPageState extends State<ChatPage> {
                   width: 333,
                   height: 30,
                   decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(6),
+                      borderRadius: BorderRadius.circular(25),
                       border: Border.all(color: Colors.black)),
                   child: const TextField(
                     decoration: InputDecoration(
                         hintText: 'Search',
                         suffixIcon: Icon(Icons.search_outlined),
-                        border: InputBorder.none),
+                        border: InputBorder.none,
+                        contentPadding:
+                            EdgeInsets.only(left: 10, top: 10, bottom: 10)),
                   ),
                 ),
               ],

@@ -1,14 +1,19 @@
+// ignore_for_file: avoid_print
+
+import 'dart:io';
 import 'package:dio/dio.dart';
-import 'package:drop_down_list/model/selected_list_item.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 import 'package:fx_project/layout/buttonfield.dart';
 import 'package:fx_project/layout/dropdownui.dart';
 import 'package:fx_project/layout/input_field.dart';
-import 'package:fx_project/layout/owndropdownlist.dart';
+import 'package:fx_project/layout/photobuttons.dart';
+import 'package:fx_project/layout/snackbar.dart';
 import 'package:fx_project/models/createjobmodel.dart';
 import 'package:fx_project/screens/environmentpage.dart';
 import 'package:fx_project/services/createjodservices.dart';
+import 'package:image_picker/image_picker.dart';
 
 class CreateJobsScreen extends StatefulWidget {
   const CreateJobsScreen({super.key});
@@ -18,6 +23,7 @@ class CreateJobsScreen extends StatefulWidget {
 }
 
 class _CreateJobsScreenState extends State<CreateJobsScreen> {
+  File? image;
   dynamic serData;
   dynamic proData;
   dynamic locData;
@@ -26,6 +32,8 @@ class _CreateJobsScreenState extends State<CreateJobsScreen> {
   String printProperty = '';
   String printLocation = '';
   String printCategory = '';
+  String locationName = '';
+  String locTenantName = '';
   List<dynamic>? propertyData = [];
   List<dynamic>? locationData = [];
   List<dynamic>? serviceData = [];
@@ -124,18 +132,6 @@ class _CreateJobsScreenState extends State<CreateJobsScreen> {
     categoryData = cateData;
   }
 
-  void _onDropDownItemSelected(SelectedListItem newSelectedOption) {
-    setState(() {});
-  }
-
-  void bottomSheet(context) {
-    showModalBottomSheet(
-        context: context,
-        builder: (BuildContext context) {
-          return Container();
-        });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -152,7 +148,8 @@ class _CreateJobsScreenState extends State<CreateJobsScreen> {
             },
             icon: const Icon(Icons.arrow_back_sharp)),
         centerTitle: true,
-        title: const Text("Create Jobs Request"),
+        title:
+            Text(currentStep == 2 ? 'Review & Submit' : 'Create Job Request'),
         actions: [
           TextButton(
               onPressed: () {
@@ -194,12 +191,43 @@ class _CreateJobsScreenState extends State<CreateJobsScreen> {
               alignment: Alignment.bottomCenter,
               child: Container(
                 //color: Colors.grey.shade100,
-                margin: const EdgeInsets.only(top: 10),
+                margin: const EdgeInsets.only(top: 5),
                 child: Row(
                   children: [
                     Expanded(
                       child: ClickButton(
-                        onpressed: details.onStepContinue,
+                        onpressed: () {
+                          if (currentStep == 0) {
+                            if (serviceController.text.isEmpty) {
+                              ReuseSnackBar().waringField(
+                                  context, "Kindly choose a service type");
+                            } else if (propertyController.text.isEmpty) {
+                              ReuseSnackBar().waringField(
+                                  context, "Kindly choose a property");
+                            } else if (locationController.text.isEmpty) {
+                              ReuseSnackBar().waringField(
+                                  context, "Kindly choose a location");
+                            } else if (briefDescripController.text.isEmpty) {
+                              ReuseSnackBar().waringField(
+                                  context, "Kindly choose a brief Description");
+                            } else {
+                              setState(() {
+                                currentStep += 1;
+                              });
+                            }
+                          } else if (currentStep == 1) {
+                            if (categoryController.text.isEmpty) {
+                              ReuseSnackBar().waringField(
+                                  context, "Kindly choose a category");
+                            } else {
+                              setState(() {
+                                currentStep += 1;
+                              });
+                            }
+                          } else {
+                            print("Steps Completed");
+                          }
+                        },
                         child: Text(isLastStep ? 'CONFIRM' : 'NEXT'),
                       ),
                     ),
@@ -233,10 +261,16 @@ class _CreateJobsScreenState extends State<CreateJobsScreen> {
                   //mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
-                      "Service*",
+                    RichText(
+                      text: const TextSpan(
+                          text: "Service",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, color: Colors.black),
+                          children: [
+                            TextSpan(
+                                text: '*', style: TextStyle(color: Colors.red))
+                          ]),
                       textAlign: TextAlign.start,
-                      style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(top: 5.0, bottom: 10.0),
@@ -258,7 +292,7 @@ class _CreateJobsScreenState extends State<CreateJobsScreen> {
                               context: context,
                               builder: (context) {
                                 return DropDownUiScreen(
-                                  titleText: 'Service',
+                                  titleText: 'Service Type',
                                   listData: serviceData!,
                                   itemBuilder: (context, index) {
                                     return Container(
@@ -297,9 +331,17 @@ class _CreateJobsScreenState extends State<CreateJobsScreen> {
                         ),
                       ),
                     ),
-                    const Text("Property*",
-                        textAlign: TextAlign.start,
-                        style: TextStyle(fontWeight: FontWeight.bold)),
+                    RichText(
+                      text: const TextSpan(
+                          text: "Property",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, color: Colors.black),
+                          children: [
+                            TextSpan(
+                                text: '*', style: TextStyle(color: Colors.red))
+                          ]),
+                      textAlign: TextAlign.start,
+                    ),
                     Padding(
                       padding: const EdgeInsets.only(top: 5.0, bottom: 10.0),
                       child: ReuseTextFields(
@@ -371,9 +413,17 @@ class _CreateJobsScreenState extends State<CreateJobsScreen> {
                                 });
                           }),
                     ),
-                    const Text("Location*",
-                        textAlign: TextAlign.start,
-                        style: TextStyle(fontWeight: FontWeight.bold)),
+                    RichText(
+                      text: const TextSpan(
+                          text: "Location",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, color: Colors.black),
+                          children: [
+                            TextSpan(
+                                text: '*', style: TextStyle(color: Colors.red))
+                          ]),
+                      textAlign: TextAlign.start,
+                    ),
                     Padding(
                       padding: const EdgeInsets.only(top: 5.0, bottom: 10.0),
                       child: ReuseTextFields(
@@ -404,19 +454,11 @@ class _CreateJobsScreenState extends State<CreateJobsScreen> {
                                     locatData = locationData![index]['units'];
                                     print("locatData: $locatData");
                                     print(locatData!.length);
-                                    //locatTenant = locatData![index]['tenant'];
-                                    for (int index_ = 0;
-                                        index_ <= locatData!.length;
-                                        index_++) {}
 
                                     return SizedBox(
                                         width:
                                             MediaQuery.of(context).size.width *
                                                 0.02,
-                                        // decoration: const BoxDecoration(
-                                        //   color: Color.fromARGB(
-                                        //       255, 248, 246, 246),
-                                        // ),
                                         child: ListTile(
                                           title: Container(
                                             decoration: const BoxDecoration(
@@ -436,15 +478,20 @@ class _CreateJobsScreenState extends State<CreateJobsScreen> {
                                               for (int index_ = 0;
                                                   index_ < locatData!.length;
                                                   index_++) ...{
-                                                // print($locatData!.lenght);
-                                                Row(
-                                                  children: [
-                                                    Row(
+                                                // locationName =
+                                                //     locatData![index_]['name'],
+                                                GestureDetector(
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            top: 8.0),
+                                                    child: Row(
                                                       mainAxisAlignment:
                                                           MainAxisAlignment
-                                                              .start,
+                                                              .spaceBetween,
                                                       children: [
                                                         Text(
+                                                          //locationName,
                                                           locatData![index_]
                                                                   ['name']
                                                               .toString(),
@@ -454,35 +501,52 @@ class _CreateJobsScreenState extends State<CreateJobsScreen> {
                                                                       FontWeight
                                                                           .bold,
                                                                   fontSize: 12),
-                                                          maxLines: 1,
                                                         ),
+                                                        for (var tenant
+                                                            in locationData![
+                                                                            index]
+                                                                        [
+                                                                        'units']
+                                                                    [index]
+                                                                ['tenant']) ...{
+                                                          // Text(
+                                                          //   tenant['name']
+                                                          //       .toString(),
+                                                          //   // locatData![index_]
+                                                          //   //         ['tenant']
+                                                          //   //     .toString(),
+                                                          //   textDirection:
+                                                          //       TextDirection
+                                                          //           .rtl,
+                                                          // ),
+                                                        },
                                                       ],
                                                     ),
-                                                    Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment.end,
-                                                      children: const [
-                                                        Text('Tenant')
-                                                      ],
-                                                    ),
-                                                    // ListTile(
-                                                    //   title: ,
-                                                    //   trailing: Text(locatTenant!['name'].toString()),
-                                                    // )
-                                                  ],
-                                                )
+                                                  ),
+                                                  onTap: () {
+                                                    setState(() {
+                                                      locationName =
+                                                          locatData![index_]
+                                                              ['name'];
+                                                      print(
+                                                          "locationName: ${locatData![index_]['tenant']}");
+                                                      locationController.text =
+                                                          ' ${locationData![index]['address']},${locatData![index_]['name']},${locatData![index_]['tenant.name']}';
+                                                    });
+                                                    Navigator.of(context).pop();
+                                                  },
+                                                ),
                                               }
                                             ],
                                           ),
-                                          onTap: () {
-                                            setState(() {
-                                              locationController.text =
-                                                  locationData![index]
-                                                      ['address'];
-                                            });
+                                          // onTap: () {
+                                          //   setState(() {
+                                          //     locationController.text =
+                                          //         ' ${locationData![index]['address']},$locationName';
+                                          //   });
 
-                                            Navigator.of(context).pop();
-                                          },
+                                          //   Navigator.of(context).pop();
+                                          // },
                                         ));
                                   },
                                 );
@@ -490,8 +554,17 @@ class _CreateJobsScreenState extends State<CreateJobsScreen> {
                         },
                       ),
                     ),
-                    const Text("Brief Description",
-                        style: TextStyle(fontWeight: FontWeight.bold)),
+                    RichText(
+                      text: const TextSpan(
+                          text: "Brief Description",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, color: Colors.black),
+                          children: [
+                            TextSpan(
+                                text: '*', style: TextStyle(color: Colors.red))
+                          ]),
+                      textAlign: TextAlign.start,
+                    ),
                     Padding(
                       padding: const EdgeInsets.only(top: 5.0, bottom: 10.0),
                       child: ReuseTextFields(
@@ -538,10 +611,15 @@ class _CreateJobsScreenState extends State<CreateJobsScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  "Maintenance Category*",
+                RichText(
+                  text: const TextSpan(
+                      text: "Maintenance Category",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, color: Colors.black),
+                      children: [
+                        TextSpan(text: '*', style: TextStyle(color: Colors.red))
+                      ]),
                   textAlign: TextAlign.start,
-                  style: TextStyle(fontWeight: FontWeight.bold),
                 ),
                 //const SizedBox(height: 10),
                 Padding(
@@ -694,71 +772,25 @@ class _CreateJobsScreenState extends State<CreateJobsScreen> {
                   padding: const EdgeInsets.only(top: 5.0, bottom: 10.0),
                   child: Row(
                     children: [
-                      GestureDetector(
-                        child: Container(
-                          width: 140,
-                          height: 40,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(6),
-                              color: const Color.fromARGB(255, 1, 30, 54)),
-                          child: Row(
-                            children: const [
-                              SizedBox(width: 8),
-                              Icon(
-                                Icons.camera_alt_outlined,
-                                size: 22,
-                                color: Colors.white,
-                              ),
-                              SizedBox(width: 10),
-                              Text(
-                                'Take Photo',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16),
-                                textAlign: TextAlign.center,
-                              ),
-                            ],
-                          ),
-                        ),
-                        onTap: () {},
-                      ),
+                      PhotoButton(
+                          icon: Icons.camera_alt_outlined,
+                          buttonName: "Take Photo",
+                          onPressed: () {
+                            pickImage(ImageSource.camera);
+                          }),
                       const SizedBox(width: 20),
-                      GestureDetector(
-                        child: Container(
-                          width: 150,
-                          height: 40,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(6),
-                              color: const Color.fromARGB(255, 1, 30, 54)),
-                          child: Row(
-                            children: const [
-                              SizedBox(width: 8),
-                              Icon(
-                                Icons.file_upload_outlined,
-                                size: 22,
-                                color: Colors.white,
-                              ),
-                              SizedBox(width: 10),
-                              Text(
-                                'Upload Photo',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16),
-                                //strutStyle: StrutStyle(leading: 1),
-                              ),
-                              SizedBox(
-                                height: 150,
-                              )
-                            ],
-                          ),
-                        ),
-                        onTap: () {},
+                      PhotoButton(
+                        onPressed: () {
+                          pickImage(ImageSource.gallery);
+                        },
+                        buttonName: "Upload Photo",
+                        icon: Icons.file_upload_outlined,
                       )
                     ],
                   ),
-                )
+                ),
+
+                //const FlutterLogo(size: 150),
               ],
             ),
           ),
@@ -767,13 +799,27 @@ class _CreateJobsScreenState extends State<CreateJobsScreen> {
             isActive: currentStep >= 2,
             title: const Text(''),
             content: Column(
-              children: [
+              children: const [
                 SizedBox(
                   height: 20,
                 ),
               ],
             )),
       ];
+  Future pickImage(ImageSource source) async {
+    try {
+      final image = await ImagePicker().pickImage(source: source);
+      if (image == null) {
+        return;
+      }
+      final imageTemporary = File(image.path);
+      setState(() {
+        this.image = imageTemporary;
+      });
+    } on PlatformException catch (e) {
+      print("Failed to pick image: $e");
+    }
+  }
 
   void onClearTap() {
     searchEditingController.clear();

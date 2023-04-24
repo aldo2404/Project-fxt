@@ -62,7 +62,7 @@ dependencies:
   persistent_bottom_nav_bar: ^5.0.2
   im_stepper: ^1.0.1+1
   drop_down_list: ^0.0.4
-  image_picker: ^0.8.7+2
+  image_picker: ^0.8.7+4
   #syncfusion_flutter_datepicker: ^21.1.41
 
 dev_dependencies:
