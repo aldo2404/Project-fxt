@@ -6,19 +6,24 @@ class PhotoButton extends StatelessWidget {
   Function()? onPressed;
   IconData? icon;
   String? buttonName;
+  MaterialStateProperty<Color?>? backgroundColor;
+  Color? textColor;
   PhotoButton({
     super.key,
     this.onPressed,
     this.buttonName,
     this.icon,
+    this.backgroundColor,
+    this.textColor,
   });
   @override
   Widget build(context) {
     return SizedBox(
       child: ElevatedButton(
         style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all(
-                const Color.fromARGB(255, 1, 30, 54))),
+          backgroundColor: backgroundColor,
+          //MaterialStateProperty.all(const Color.fromARGB(255, 1, 30, 54)),
+        ),
         onPressed: onPressed,
         child: Row(
           children: [
@@ -26,7 +31,7 @@ class PhotoButton extends StatelessWidget {
             Icon(
               icon,
               size: 22,
-              color: Colors.white,
+              color: textColor,
             ),
             const SizedBox(width: 10),
             Text(
@@ -34,7 +39,7 @@ class PhotoButton extends StatelessWidget {
               style: const TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
-                  fontSize: 16),
+                  fontSize: 14),
               textAlign: TextAlign.center,
             ),
           ],

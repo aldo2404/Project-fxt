@@ -55,10 +55,12 @@ class _PersistentnavbarState extends State<Persistentnavbar> {
               activeColorPrimary: const Color.fromARGB(255, 230, 81, 0),
               inactiveColorPrimary: const Color.fromARGB(255, 1, 21, 88)),
           PersistentBottomNavBarItem(
-              icon: const Icon(Icons.notifications),
-              title: 'Notification',
-              activeColorPrimary: const Color.fromARGB(255, 230, 81, 0),
-              inactiveColorPrimary: const Color.fromARGB(255, 1, 21, 88)),
+            icon: const Icon(Icons.notifications),
+            title: 'Notification',
+            activeColorPrimary: const Color.fromARGB(255, 230, 81, 0),
+            inactiveColorPrimary: const Color.fromARGB(255, 1, 21, 88),
+            //routeAndNavigatorSettings: RouteAndNavigatorSettings(),
+          ),
           PersistentBottomNavBarItem(
               icon: const Icon(Icons.menu),
               title: 'Menu',

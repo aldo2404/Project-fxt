@@ -72,25 +72,6 @@ class _DropDownUiScreenState extends State<DropDownUiScreen> {
                     controller: scrollController,
                     itemCount: widget.listData.length,
                     itemBuilder: widget.itemBuilder,
-                    // (context, index) {
-                    //   return Container(
-                    //     decoration: const BoxDecoration(
-                    //         border: Border(
-                    //             bottom: BorderSide(color: Colors.black26))),
-                    //     child: ListTile(
-                    //       title: Text(widget.listData![index]['name'].toString()),
-                    //       subtitle:
-                    //           Text(widget.listData![index]['address'].toString()),
-                    //       onTap: () {
-                    //         setState(() {
-                    //           dummyData =
-                    //               widget.listData![index]['name'].toString();
-                    //         });
-                    //         Navigator.of(context).pop();
-                    //       },
-                    //     ),
-                    //   );
-                    // }
                   ),
                 ),
               ],

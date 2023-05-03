@@ -72,6 +72,7 @@ class _PasswordForgotPageState extends State<PasswordForgotPage> {
                     inputfieldcolor: Colors.white,
                     password: false,
                     readOnly: false,
+                    color: const Color(0xFF000000),
                     helperText: '',
                     maxLines: 1,
                     controller: emailcontroller,
