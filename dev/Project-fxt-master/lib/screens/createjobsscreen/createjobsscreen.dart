@@ -24,12 +24,16 @@ class CreateJobsScreen extends StatefulWidget {
 }
 
 class _CreateJobsScreenState extends State<CreateJobsScreen> {
-  List<File>? _imageFiles;
+  final List<File> _imageFiles = [];
+  dynamic baseUrl;
   dynamic serData;
   dynamic proData;
   dynamic locData;
   dynamic cateData;
   dynamic prioData;
+  dynamic manData;
+  dynamic engData;
+  dynamic imageId;
   String printService = '';
   String printProperty = '';
   String printLocation = '';
@@ -41,9 +45,12 @@ class _CreateJobsScreenState extends State<CreateJobsScreen> {
   List<dynamic>? propertyData = [];
   List<dynamic>? locationData = [];
   List<dynamic>? serviceData = [];
-  List<dynamic>? locatData = [];
+  List<Map<String, dynamic>>? locatData = [];
   List<dynamic>? categoryData = [];
   List<dynamic>? priorityData = [];
+  List<dynamic>? engineerData = [];
+  List<dynamic>? managerData = [];
+  List<String> imgId = [];
 
   final bool _isChecked = true;
 
@@ -81,7 +88,7 @@ class _CreateJobsScreenState extends State<CreateJobsScreen> {
     super.initState();
     serviceGetData();
     propetyGetData();
-    categoryGetData();
+
     priorityGetData();
     priorityController.text = 'Medium';
     _datePicker.text = nowDate();
@@ -89,16 +96,14 @@ class _CreateJobsScreenState extends State<CreateJobsScreen> {
 // service drop down list URL data........
 
   Future<void> serviceGetData() async {
-    dynamic baseurl1 = await EnvironmentPageState.getBaseurl() as dynamic;
+    baseUrl = await EnvironmentPageState.getBaseurl() as dynamic;
     serData = (await (CreateJobServices(
-            service: Dio(BaseOptions(
-                baseUrl: 'https://$baseurl1/v1/jobs/service-type/')))
+            service: Dio(
+                BaseOptions(baseUrl: 'https://$baseUrl/v1/jobs/service-type/')))
         .createJobService()));
 
     Future.delayed(const Duration(seconds: 0)).then((value) => setState(() {}));
-    print("service data : ${serData.toString()}");
     serviceData = serData;
-
     name = serviceData!.whereType<Map>().first.toString();
   }
 
@@ -112,9 +117,7 @@ class _CreateJobsScreenState extends State<CreateJobsScreen> {
         .createJobService()));
 
     Future.delayed(const Duration(seconds: 0)).then((value) => setState(() {}));
-    print("property data : ${proData.toString()}");
     propertyData = proData;
-    print('single data: ${propertyData![1]}');
   }
 
 // Location drop down list URL data........
@@ -125,22 +128,20 @@ class _CreateJobsScreenState extends State<CreateJobsScreen> {
             service: Dio(BaseOptions(
                 baseUrl: 'https://$baseurl2/v1/properties/$id/units/')))
         .createJobService()));
-
     Future.delayed(const Duration(seconds: 0)).then((value) => setState(() {}));
-    print('location data : ${locData.toString()}');
     locationData = locData;
   }
+
 // maintenance category drop down list URL data........
 
-  Future<void> categoryGetData() async {
+  Future<void> categoryGetData(cateid) async {
     dynamic baseurl1 = await EnvironmentPageState.getBaseurl() as dynamic;
     cateData = (await (CreateJobServices(
-            service: Dio(
-                BaseOptions(baseUrl: 'https://$baseurl1/v1/fyxt-categories/')))
+            service: Dio(BaseOptions(
+                baseUrl:
+                    'https://$baseurl1/v1/properties/$cateid/categories/')))
         .createJobService()));
-
     Future.delayed(const Duration(seconds: 0)).then((value) => setState(() {}));
-    print("category data : ${cateData.toString()}");
     categoryData = cateData;
   }
 
@@ -150,15 +151,36 @@ class _CreateJobsScreenState extends State<CreateJobsScreen> {
             service: Dio(
                 BaseOptions(baseUrl: 'https://$baseurl1/v1/jobs/priorities/')))
         .createJobService()));
-
     Future.delayed(const Duration(seconds: 0)).then((value) => setState(() {}));
-    print("category data : ${prioData.toString()}");
     priorityData = prioData;
+  }
+
+  Future<void> managerGetData(manid) async {
+    dynamic baseurl1 = await EnvironmentPageState.getBaseurl() as dynamic;
+    manData = (await (CreateJobServices(
+            service: Dio(BaseOptions(
+                baseUrl: 'https://$baseurl1/v1/properties/$manid/managers/')))
+        .createJobService()));
+    Future.delayed(const Duration(seconds: 0)).then((value) => setState(() {}));
+    managerData = manData;
+    print('manager $managerData');
+  }
+
+  Future<void> engineerGetData(engid) async {
+    dynamic baseurl1 = await EnvironmentPageState.getBaseurl() as dynamic;
+    engData = (await (CreateJobServices(
+            service: Dio(BaseOptions(
+                baseUrl: 'https://$baseurl1/v1/properties/$engid/engineers/')))
+        .createJobService()));
+    Future.delayed(const Duration(seconds: 0)).then((value) => setState(() {}));
+    engineerData = engData;
+    print('engineer $engineerData');
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 1, 48, 92),
@@ -274,56 +296,124 @@ class _CreateJobsScreenState extends State<CreateJobsScreen> {
 
   List<Step> getSteps() => [
         Step(
-            state: currentStep > 0 ? StepState.complete : StepState.indexed,
-            isActive: currentStep >= 0,
-            title: const Text(''),
-            content: Stack(
-              fit: StackFit.loose,
-              //color: Colors.white,
-              children: [
-                Form(
-                  key: step1FormKey,
-                  child: Column(
-                    //mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      mandatoryText("Service"),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 5.0, bottom: 10.0),
-                        child: ReuseTextFields(
+          state: currentStep > 0 ? StepState.complete : StepState.indexed,
+          isActive: currentStep >= 0,
+          title: const Text(''),
+          content: Stack(
+            fit: StackFit.loose,
+            //color: Colors.white,
+            children: [
+              Form(
+                key: step1FormKey,
+                child: Column(
+                  //mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    mandatoryText("Service"),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 5.0, bottom: 10.0),
+                      child: ReuseTextFields(
+                        hinttext: 'Select',
+                        inputfieldcolor: Colors.white,
+                        maxLines: 1,
+                        password: false,
+                        color: const Color(0xFF000000),
+                        readOnly: true,
+                        showCursor: false,
+                        controller: serviceController,
+                        textAlign: TextAlign.left,
+                        onTap: () async {
+                          bottomSheetDropDown(
+                            'Service',
+                            serviceData!.length,
+                            (context, index) {
+                              return Container(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.02,
+                                  decoration: const BoxDecoration(
+                                    border: Border(
+                                        bottom:
+                                            BorderSide(color: Colors.black12)),
+                                  ),
+                                  child: ListTile(
+                                    title: Text(
+                                      serviceData![index]['name'].toString(),
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 12),
+                                    ),
+                                    onTap: () {
+                                      setState(() {
+                                        serviceController.text =
+                                            serviceData![index]['name'];
+                                      });
+
+                                      Navigator.of(context).pop();
+                                    },
+                                  ));
+                            },
+                          );
+                        },
+                        suffixs: const Icon(
+                          Icons.keyboard_arrow_down_sharp,
+                          size: 30,
+                        ),
+                      ),
+                    ),
+                    mandatoryText("Property"),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 5.0, bottom: 10.0),
+                      child: ReuseTextFields(
                           hinttext: 'Select',
                           inputfieldcolor: Colors.white,
                           maxLines: 1,
                           password: false,
-                          color: const Color(0xFF000000),
                           readOnly: true,
+                          color: const Color(0xFF000000),
                           showCursor: false,
-                          controller: serviceController,
+                          controller: propertyController,
                           textAlign: TextAlign.left,
+                          suffixs: const Icon(
+                            Icons.keyboard_arrow_down_sharp,
+                            size: 30,
+                          ),
                           onTap: () async {
                             bottomSheetDropDown(
-                              'Service',
-                              serviceData!.length,
+                              'Property',
+                              propertyData!.length,
                               (context, index) {
                                 return Container(
                                     width: MediaQuery.of(context).size.width *
                                         0.02,
                                     decoration: const BoxDecoration(
-                                      border: Border(
-                                          bottom: BorderSide(
-                                              color: Colors.black12)),
+                                      color: Color.fromARGB(255, 248, 246, 246),
                                     ),
                                     child: ListTile(
                                       title: Text(
-                                        serviceData![index]['name'].toString(),
+                                        propertyData![index]['name'].toString(),
                                         style: const TextStyle(
                                             fontWeight: FontWeight.bold,
                                             fontSize: 12),
                                       ),
+                                      subtitle: Text(
+                                        propertyData![index]['address']
+                                            .toString(),
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 12),
+                                        maxLines: 1,
+                                      ),
                                       onTap: () {
                                         setState(() {
-                                          serviceController.text =
-                                              serviceData![index]['name'];
+                                          propertyController.text =
+                                              propertyData![index]['name'];
+                                          print(
+                                              "id: ${propertyData![index]['id']}");
+                                          id = propertyData![index]['id'];
+                                          locationGetData(id);
+                                          categoryGetData(id);
+                                          managerGetData(id);
+                                          engineerGetData(id);
                                         });
 
                                         Navigator.of(context).pop();
@@ -331,224 +421,138 @@ class _CreateJobsScreenState extends State<CreateJobsScreen> {
                                     ));
                               },
                             );
-                          },
-                          suffixs: const Icon(
-                            Icons.keyboard_arrow_down_sharp,
-                            size: 30,
-                          ),
+                            ;
+                          }),
+                    ),
+                    mandatoryText("Location"),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 5.0, bottom: 10.0),
+                      child: ReuseTextFields(
+                        hinttext: 'Select',
+                        inputfieldcolor: Colors.white,
+                        maxLines: 1,
+                        password: false,
+                        readOnly: true,
+                        showCursor: false,
+                        color: const Color(0xFF000000),
+                        controller: locationController,
+                        textAlign: TextAlign.left,
+                        suffixs: const Icon(
+                          Icons.keyboard_arrow_down_sharp,
+                          size: 30,
                         ),
-                      ),
-                      mandatoryText("Property"),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 5.0, bottom: 10.0),
-                        child: ReuseTextFields(
-                            hinttext: 'Select',
-                            inputfieldcolor: Colors.white,
-                            maxLines: 1,
-                            password: false,
-                            readOnly: true,
-                            color: const Color(0xFF000000),
-                            showCursor: false,
-                            controller: propertyController,
-                            textAlign: TextAlign.left,
-                            suffixs: const Icon(
-                              Icons.keyboard_arrow_down_sharp,
-                              size: 30,
-                            ),
-                            onTap: () async {
-                              bottomSheetDropDown(
-                                'Property',
-                                propertyData!.length,
-                                (context, index) {
-                                  return Container(
-                                      width: MediaQuery.of(context).size.width *
-                                          0.02,
-                                      decoration: const BoxDecoration(
-                                        color:
-                                            Color.fromARGB(255, 248, 246, 246),
+                        onTap: () {
+                          bottomSheetDropDown(
+                            'Location',
+                            locationData!.length,
+                            (context, index) {
+                              final locAddress =
+                                  locationData![index]['address'].toString();
+                              locatData = locationData![index]['units']
+                                      .cast<Map<String, dynamic>>() ??
+                                  [];
+                              return ListTile(
+                                title: Container(
+                                  padding: const EdgeInsets.all(8.0),
+                                  decoration: const BoxDecoration(
+                                    color: Color.fromARGB(255, 248, 246, 246),
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      Text(
+                                        locAddress,
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 12),
                                       ),
-                                      child: ListTile(
-                                        title: Text(
-                                          propertyData![index]['name']
-                                              .toString(),
-                                          style: const TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 12),
-                                        ),
-                                        subtitle: Text(
-                                          propertyData![index]['address']
-                                              .toString(),
-                                          style: const TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 12),
-                                          maxLines: 1,
-                                        ),
-                                        onTap: () {
-                                          setState(() {
-                                            propertyController.text =
-                                                propertyData![index]['name'];
-                                            print(
-                                                "id: ${propertyData![index]['id']}");
-                                            id = propertyData![index]['id'];
-                                            locationGetData(id);
-                                          });
-
-                                          Navigator.of(context).pop();
-                                        },
-                                      ));
-                                },
-                              );
-                              ;
-                            }),
-                      ),
-                      mandatoryText("Location"),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 5.0, bottom: 10.0),
-                        child: ReuseTextFields(
-                          hinttext: 'Select',
-                          inputfieldcolor: Colors.white,
-                          maxLines: 1,
-                          password: false,
-                          readOnly: true,
-                          showCursor: false,
-                          color: const Color(0xFF000000),
-                          controller: locationController,
-                          textAlign: TextAlign.left,
-                          suffixs: const Icon(
-                            Icons.keyboard_arrow_down_sharp,
-                            size: 30,
-                          ),
-                          onTap: () {
-                            bottomSheetDropDown(
-                              'Location',
-                              locationData!.length,
-                              (context, index) {
-                                locatData = locationData![index]['units'];
-                                return SizedBox(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.02,
-                                  child: Column(children: [
-                                    Container(
+                                    ],
+                                  ),
+                                ),
+                                subtitle: Column(
+                                    children: locatData!.map<Widget>((unit) {
+                                  final unitName = unit['name'];
+                                  final tenantName = unit['tenant'] != null
+                                      ? unit['tenant']['name']
+                                      : '-';
+                                  return InkWell(
+                                    child: Padding(
                                       padding: const EdgeInsets.all(8.0),
-                                      decoration: const BoxDecoration(
-                                        color:
-                                            Color.fromARGB(255, 248, 246, 246),
-                                      ),
                                       child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
                                         children: [
                                           Text(
-                                            locationData![index]['address']
-                                                .toString(),
+                                            unitName,
                                             style: const TextStyle(
                                                 fontWeight: FontWeight.bold,
                                                 fontSize: 12),
                                           ),
+                                          Text(
+                                            tenantName,
+                                            textDirection: TextDirection.rtl,
+                                          ),
                                         ],
                                       ),
                                     ),
-                                    ListView.builder(
-                                        controller: ScrollController(),
-                                        shrinkWrap: true,
-                                        itemCount: locatData!.length,
-                                        itemBuilder: (context, index_) {
-                                          return Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: GestureDetector(
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: [
-                                                  Text(
-                                                    locatData![index_]['name']
-                                                        .toString(),
-                                                    style: const TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        fontSize: 12),
-                                                  ),
-                                                  Text(
-                                                    locatData![index_]
-                                                                ['tenant'] !=
-                                                            null
-                                                        ? locatData![index_]
-                                                            ['tenant']['name']
-                                                        : '_',
-                                                    textDirection:
-                                                        TextDirection.rtl,
-                                                  ),
-                                                ],
-                                              ),
-                                              onTap: () {
-                                                locationName =
-                                                    locatData![index_]['name'];
-                                                locTenantName =
-                                                    locatData![index_]
-                                                                ['tenant'] !=
-                                                            null
-                                                        ? locatData![index_]
-                                                            ['tenant']['name']
-                                                        : '_';
-                                                locatAddress =
-                                                    locationData![index]
-                                                        ['address'];
-                                                setState(() {
-                                                  print(
-                                                      '$locTenantName,$locationName');
-                                                  locationController.text =
-                                                      ' $locatAddress,$locationName,$locTenantName';
-
-                                                  //' ${locationData![index]['address']},${locatData![index_]['name']},${locatData![index_]['tenant']['name']}';
-                                                });
-                                                Navigator.of(context).pop();
-                                              },
-                                            ),
-                                          );
-                                        }),
-                                  ]),
-                                );
-                              },
-                            );
-                          },
-                        ),
+                                    onTap: () {
+                                      locationName = unitName;
+                                      locTenantName = tenantName;
+                                      locatAddress = locAddress;
+                                      setState(() {
+                                        print('$locTenantName,$locationName');
+                                        locationController.text =
+                                            ' $locAddress,$unitName,$tenantName';
+                                      });
+                                      Navigator.of(context).pop();
+                                    },
+                                  );
+                                }).toList()),
+                              );
+                            },
+                          );
+                        },
                       ),
-                      mandatoryText("Brief Description"),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 5.0, bottom: 10.0),
-                        child: ReuseTextFields(
-                          textAlign: TextAlign.left,
-                          hinttext: "Description",
-                          color: const Color(0xFF000000),
-                          inputfieldcolor: Colors.white,
-                          maxLines: 4,
-                          controller: briefDescripController,
-                          password: false,
-                          readOnly: false,
-                        ),
+                    ),
+                    mandatoryText("Brief Description"),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 5.0, bottom: 10.0),
+                      child: ReuseTextFields(
+                        keyboardtypes: TextInputType.multiline,
+                        textAlign: TextAlign.left,
+                        hinttext: "Description",
+                        color: const Color(0xFF000000),
+                        inputfieldcolor: Colors.white,
+                        maxLines: 4,
+                        controller: briefDescripController,
+                        password: false,
+                        readOnly: false,
                       ),
-                      const Text("Detailed Description",
-                          textAlign: TextAlign.start,
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              decoration: TextDecoration.none)),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 5.0, bottom: 10.0),
-                        child: ReuseTextFields(
-                          textAlign: TextAlign.left,
-                          hinttext: "Description",
-                          inputfieldcolor: Colors.white,
-                          maxLines: 4,
-                          color: const Color(0xFF000000),
-                          controller: detailDescripController,
-                          password: false,
-                          readOnly: false,
-                        ),
+                    ),
+                    const Text("Detailed Description",
+                        textAlign: TextAlign.start,
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            decoration: TextDecoration.none)),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 5.0, bottom: 10.0),
+                      child: ReuseTextFields(
+                        keyboardtypes: TextInputType.text,
+                        textAlign: TextAlign.left,
+                        hinttext: "Description",
+                        inputfieldcolor: Colors.white,
+                        maxLines: 4,
+                        color: const Color(0xFF000000),
+                        controller: detailDescripController,
+                        password: false,
+                        readOnly: false,
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-              ],
-            )),
+              ),
+            ],
+          ),
+        ),
 
         //Second Step page.....
         Step(
@@ -728,12 +732,12 @@ class _CreateJobsScreenState extends State<CreateJobsScreen> {
                             backgroundColor: MaterialStateProperty.all(
                                 const Color.fromARGB(255, 1, 30, 54)),
                             onPressed: () {
-                              pickImage(ImageSource.camera);
+                              pickImageByCamera();
                             }),
                         const SizedBox(width: 20),
                         PhotoButton(
                           onPressed: () {
-                            pickImage(ImageSource.gallery);
+                            pickMultipleImage();
                           },
                           buttonName: "Upload Photo",
                           textColor: Colors.white,
@@ -744,20 +748,50 @@ class _CreateJobsScreenState extends State<CreateJobsScreen> {
                       ],
                     ),
                   ),
-                  // _imageFiles!.isNotEmpty
-                  //     ? GridView.count(
-                  //         crossAxisCount: 5,
-                  //         children: List.generate(
-                  //             _imageFiles!.length,
-                  //             (index) => Image.file(
-                  //                   _imageFiles![index],
-                  //                   width: 60,
-                  //                   height: 75,
-                  //                 )),
-                  //       )
-                  //     : const SizedBox(
-                  //         height: 168,
-                  //       )
+
+                  //multiple image upload in step 2 screen .......
+
+                  _imageFiles.isNotEmpty
+                      ? GridView.count(
+                          shrinkWrap: true,
+                          crossAxisCount: 5,
+                          children: List.generate(
+                              _imageFiles.length,
+                              (index) => Stack(children: <Widget>[
+                                    Image.file(
+                                      _imageFiles[index],
+                                      fit: BoxFit.cover,
+                                      scale: 2,
+                                    ),
+                                    Positioned(
+                                      right: 0,
+                                      top: 0,
+                                      child: InkWell(
+                                        child: const Icon(
+                                          Icons.cancel,
+                                          size: 16,
+                                          color: Colors.black26,
+                                        ),
+                                        onTap: () async {
+                                          setState(() {
+                                            _imageFiles.removeAt(index);
+                                          });
+                                          var imageId = imgId[index].toString();
+
+                                          await CreateJobServices()
+                                              .deleteFiles(imageId);
+                                          setState(() {
+                                            imgId.removeAt(index);
+                                          });
+                                        },
+                                      ),
+                                    ),
+                                    const SizedBox(height: 100)
+                                  ])),
+                        )
+                      : const SizedBox(
+                          height: 168,
+                        )
                 ],
               ),
             ),
@@ -896,82 +930,66 @@ class _CreateJobsScreenState extends State<CreateJobsScreen> {
                           'Location',
                           locationData!.length,
                           (context, index) {
-                            locatData = locationData![index]['units'];
-                            return SizedBox(
-                              width: MediaQuery.of(context).size.width * 0.02,
-                              child: Column(children: [
-                                Container(
-                                  padding: const EdgeInsets.all(8.0),
-                                  decoration: const BoxDecoration(
-                                    color: Color.fromARGB(255, 248, 246, 246),
-                                  ),
-                                  child: Row(
-                                    children: [
-                                      Text(
-                                        locationData![index]['address']
-                                            .toString(),
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 12),
-                                      ),
-                                    ],
-                                  ),
+                            final locAddress =
+                                locationData![index]['address'].toString();
+                            locatData = locationData![index]['units']
+                                    .cast<Map<String, dynamic>>() ??
+                                [];
+                            return ListTile(
+                              title: Container(
+                                padding: const EdgeInsets.all(8.0),
+                                decoration: const BoxDecoration(
+                                  color: Color.fromARGB(255, 248, 246, 246),
                                 ),
-                                ListView.builder(
-                                    controller: ScrollController(),
-                                    shrinkWrap: true,
-                                    itemCount: locatData!.length,
-                                    itemBuilder: (context, index_) {
-                                      return Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: GestureDetector(
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Text(
-                                                locatData![index_]['name']
-                                                    .toString(),
-                                                style: const TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 12),
-                                              ),
-                                              Text(
-                                                locatData![index_]['tenant'] !=
-                                                        null
-                                                    ? locatData![index_]
-                                                        ['tenant']['name']
-                                                    : '_',
-                                                textDirection:
-                                                    TextDirection.rtl,
-                                              ),
-                                            ],
-                                          ),
-                                          onTap: () {
-                                            locationName =
-                                                locatData![index_]['name'];
-                                            locTenantName = locatData![index_]
-                                                        ['tenant'] !=
-                                                    null
-                                                ? locatData![index_]['tenant']
-                                                    ['name']
-                                                : '_';
-                                            locatAddress =
-                                                locationData![index]['address'];
-                                            setState(() {
-                                              print(
-                                                  '$locTenantName,$locationName');
-                                              locationController.text =
-                                                  ' $locatAddress,$locationName,$locTenantName';
-
-                                              //' ${locationData![index]['address']},${locatData![index_]['name']},${locatData![index_]['tenant']['name']}';
-                                            });
-                                            Navigator.of(context).pop();
-                                          },
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      locAddress,
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 12),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              subtitle: Column(
+                                  children: locatData!.map<Widget>((unit) {
+                                final unitName = unit['name'];
+                                final tenantName = unit['tenant'] != null
+                                    ? unit['tenant']['name']
+                                    : '-';
+                                return InkWell(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          unitName,
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 12),
                                         ),
-                                      );
-                                    }),
-                              ]),
+                                        Text(
+                                          tenantName,
+                                          textDirection: TextDirection.rtl,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  onTap: () {
+                                    locationName = unitName;
+                                    locTenantName = tenantName;
+                                    locatAddress = locAddress;
+                                    setState(() {
+                                      locationController.text =
+                                          ' $locAddress,$unitName,$tenantName';
+                                    });
+                                    Navigator.of(context).pop();
+                                  },
+                                );
+                              }).toList()),
                             );
                           },
                         );
@@ -1082,7 +1100,13 @@ class _CreateJobsScreenState extends State<CreateJobsScreen> {
                       titleText: "Assign Manager:",
                       editableText: propertyController.text,
                       iconVisiable: true,
-                      onPressed: () {},
+                      onPressed: () {
+                        bottomSheetDropDown(
+                            'Assign Manager', managerData!.length,
+                            (context, index) {
+                          return Container();
+                        });
+                      },
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -1145,46 +1169,53 @@ class _CreateJobsScreenState extends State<CreateJobsScreen> {
                                   borderRadius: BorderRadius.circular(8),
                                 ),
                                 child: ExpansionTile(
-                                  childrenPadding: const EdgeInsets.symmetric(
-                                      vertical: 5.0, horizontal: 5),
-                                  expandedCrossAxisAlignment:
-                                      CrossAxisAlignment.stretch,
+                                  // childrenPadding: const EdgeInsets.symmetric(
+                                  //     vertical: 5.0, horizontal: 5),
+                                  // expandedCrossAxisAlignment:
+                                  //     CrossAxisAlignment.stretch,
                                   title: const Text(
                                     'Access Instruction',
                                     style:
                                         TextStyle(fontWeight: FontWeight.bold),
                                   ),
                                   children: [
-                                    textIcon
-                                        ? Text(textController.text)
-                                        : ReuseTextFields(
-                                            controller: textController,
-                                            hinttext: 's',
-                                            inputfieldcolor: Colors.black12,
-                                            maxLines: 5,
-                                            minLines: 1,
-                                            password: false,
-                                            readOnly: false,
-                                            showCursor: true,
-                                            color: const Color.fromARGB(
-                                                255, 226, 72, 1),
-                                            textAlign: TextAlign.start),
-                                    IconButton(
-                                        onPressed: () {
-                                          setState(() {
-                                            textIcon = !textIcon;
-                                          });
-                                        },
-                                        icon: textIcon
-                                            ? const Icon(
-                                                Icons.mode_edit_outline,
-                                                size: 16,
-                                              )
-                                            : const Icon(
-                                                Icons.check_sharp,
-                                                color: Color.fromARGB(
-                                                    255, 230, 81, 0),
-                                              ))
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        textIcon
+                                            ? Text(textController.text)
+                                            : ReuseTextFields(
+                                                width: 270,
+                                                controller: textController,
+                                                hinttext: 's',
+                                                inputfieldcolor: Colors.black12,
+                                                maxLines: 5,
+                                                minLines: 1,
+                                                password: false,
+                                                readOnly: false,
+                                                showCursor: true,
+                                                color: const Color.fromARGB(
+                                                    255, 226, 72, 1),
+                                                textAlign: TextAlign.start),
+                                        IconButton(
+                                            onPressed: () {
+                                              setState(() {
+                                                textIcon = !textIcon;
+                                              });
+                                            },
+                                            icon: textIcon
+                                                ? const Icon(
+                                                    Icons.mode_edit_outline,
+                                                    //size: 16,
+                                                  )
+                                                : const Icon(
+                                                    Icons.check_sharp,
+                                                    color: Color.fromARGB(
+                                                        255, 230, 81, 0),
+                                                  ))
+                                      ],
+                                    )
                                   ],
                                 )),
                           ),
@@ -1196,20 +1227,47 @@ class _CreateJobsScreenState extends State<CreateJobsScreen> {
                                   fontSize: 12, fontWeight: FontWeight.bold),
                             ),
                           ),
-                          // _imageFiles!.isNotEmpty
-                          //     ? GridView.count(
-                          //         crossAxisCount: 5,
-                          //         children: List.generate(
-                          //             _imageFiles!.length,
-                          //             (index) => Image.file(
-                          //                   _imageFiles![index],
-                          //                   width: 60,
-                          //                   height: 75,
-                          //                 )),
-                          //       )
-                          //     : const SizedBox(
-                          //         height: 5,
-                          //       )
+                          _imageFiles.isNotEmpty
+                              ? GridView.count(
+                                  shrinkWrap: true,
+                                  crossAxisCount: 5,
+                                  children: List.generate(
+                                      _imageFiles.length,
+                                      (index) => Stack(children: [
+                                            Image.file(
+                                              _imageFiles[index],
+                                              fit: BoxFit.cover,
+                                              scale: 1,
+                                            ),
+                                            Positioned(
+                                              right: 0,
+                                              top: 0,
+                                              child: InkWell(
+                                                child: const Icon(
+                                                  Icons.cancel,
+                                                  size: 16,
+                                                  color: Colors.white,
+                                                ),
+                                                onTap: () async {
+                                                  setState(() {
+                                                    _imageFiles.removeAt(index);
+                                                  });
+                                                  var imageId =
+                                                      imgId[index].toString();
+
+                                                  await CreateJobServices()
+                                                      .deleteFiles(imageId);
+                                                  setState(() {
+                                                    imgId.removeAt(index);
+                                                  });
+                                                },
+                                              ),
+                                            )
+                                          ])),
+                                )
+                              : const SizedBox(
+                                  height: 5,
+                                )
                         ],
                       ),
                     )
@@ -1218,19 +1276,127 @@ class _CreateJobsScreenState extends State<CreateJobsScreen> {
               ),
             )),
       ];
-  Future pickImage(ImageSource source) async {
-    try {
-      final image = await ImagePicker()
-          .pickImage(source: source, preferredCameraDevice: CameraDevice.front);
-      if (image == null) {
-        return;
+  Future<void> pickMultipleImage() async {
+    List<XFile> images =
+        await ImagePicker().pickMultiImage(maxHeight: 600, maxWidth: 600);
+
+    if (images != null) {
+      for (var i = 0; i < images.length; i++) {
+        File pic = File(images[i].path);
+        print('pic:$pic');
+        print('path: ${images[i].path}');
+        setState(() {
+          _imageFiles.add(pic);
+        });
       }
-      final imageTemporary = File(image.path);
+      uploadImage();
+    }
+  }
+
+  Future<void> pickImageByCamera() async {
+    XFile? cameraImage = await ImagePicker().pickImage(
+      source: ImageSource.camera,
+      maxWidth: 150,
+      maxHeight: 150,
+    );
+    if (cameraImage == null) return;
+    if (cameraImage != null) {
       setState(() {
-        _imageFiles = imageTemporary as List<File>;
+        _imageFiles.add(File(cameraImage.path));
       });
-    } on PlatformException catch (e) {
-      print("Failed to pick image: $e");
+      uploadImage();
+    }
+  }
+
+  Future<void> uploadImage() async {
+    imageId = (await CreateJobServices().uploadFile(_imageFiles));
+    //print(_imageFiles);
+    Future.delayed(const Duration(seconds: 0)).then((value) => setState(
+          () {},
+        ));
+
+    // dynamic baseurl1 = await EnvironmentPageState.getBaseurl() as dynamic;
+    // FormData formData = FormData();
+    // dynamic data = {'file': _imageFiles, 'mime_Type': 'png'};
+    // await (CreateJobServices(
+    //         service: Dio(BaseOptions(baseUrl: 'https://$baseurl1/v1/photos/')))
+    //     .uploadFile(formData));
+
+    // var jsonResponse = imageId;
+    // print('imgid${imageId['id']}');
+    // var id = imageId['id'];
+    // print('id : $id');
+
+    // imgId.add(id);
+    // for (var i = 0; i < _imageFiles.length; i++) {
+    //   formData.files.add(MapEntry(
+    //     'file',
+    //     await MultipartFile.fromFile(_imageFiles[i].path),
+    //   ));
+    //   formData.fields.add(MapEntry('mime)type', 'image/png'));
+    //   formData.fields.add(MapEntry('description', 'photo'));
+    //   formData.fields.add(MapEntry('source', 'job'));
+    //   formData.fields.add(MapEntry('type', 'Pro Completion'));
+    // }
+  }
+
+  // Future<void> deleteFiles(imageid) async {
+  //   dynamic baseurl1 = await EnvironmentPageState.getBaseurl() as dynamic;
+  //   await (CreateJobServices(
+  //           service: Dio(
+  //               BaseOptions(baseUrl: 'https://$baseurl1/v1/photos/$imageid/')))
+  //       .deleteFiles());
+  // }
+
+  Future<void> uploadCreateJobs({
+    dynamic priority,
+    dynamic serviceType,
+    dynamic property,
+    dynamic category,
+    dynamic targetDate,
+    dynamic manager,
+    dynamic description,
+    dynamic accessInstruction,
+    List<dynamic>? photos,
+    dynamic unitloc,
+    dynamic engineers,
+    dynamic issueType,
+  }) async {
+    try {
+      dynamic baseurl1 = await EnvironmentPageState.getBaseurl() as dynamic;
+
+      var data = {
+        "service_type": serviceType,
+        "type": "Regular",
+        "request_type": "In Unit",
+        "property": property,
+        "category": category,
+        "target_date": targetDate,
+        "description": description,
+        "access_instruction": accessInstruction,
+        "unit_entry_permission": false,
+        "property_entry_permission": false,
+        "skip_site_visit": false,
+        "request_feedback_on_close": false,
+        "request_auto_response": false,
+        "skip_bid": false,
+        "courtesy_job": false,
+        "request_completion_photos": false,
+        "_vendors": [],
+        "followers": [],
+        "engineers_required": false,
+        "engineers": [engineers],
+        "photos": photos,
+        "pm_assignee": manager,
+        "issue_type": issueType,
+        "priority": priority,
+        "unit": unitloc,
+      };
+      await (CreateJobServices(
+              service: Dio(BaseOptions(baseUrl: 'https://$baseurl1/v1/jobs/')))
+          .uploadCreateJob(data));
+    } catch (e) {
+      print('error $e');
     }
   }
 
@@ -1250,6 +1416,33 @@ class _CreateJobsScreenState extends State<CreateJobsScreen> {
       textAlign: TextAlign.start,
     );
   }
+
+  // Future<dynamic> fileUpload(List<String> filepath, String url) async {
+  //   var token = await storage.getToken();
+  //   var idToken = await storage.getIdToken();
+  //   Dio dio = Dio();
+
+  //   List uploadList = [];
+
+  //   FormData formData = FormData.fromMap({"assignment": uploadList});
+  //   for (var file in filepath) {
+  //     formData.files.addAll([
+  //       MapEntry("assignment", await MultipartFile.fromFile(file)),
+  //     ]);
+  //     // var multipartFile = await MultipartFile.fromFile(
+  //     //   file
+  //     // );
+  //     // uploadList.add(multipartFile);
+  //   }
+
+  //   var response = await dio.post(APIURL.baseUrl + url,
+  //       data: formData,
+  //       options: Options(headers: {
+  //         HttpHeaders.authorizationHeader: "Bearer $token",
+  //         'idToken': idToken,
+  //       }));
+  //   return response;
+  // }
 
   bottomSheetDropDown(String titleText, int? itemCount,
       Widget? Function(BuildContext, int) itemBuilder) async {

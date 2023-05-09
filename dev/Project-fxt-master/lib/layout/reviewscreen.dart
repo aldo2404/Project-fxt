@@ -18,16 +18,23 @@ class ReviewScreen extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(
-          titleText!,
-          style: const TextStyle(fontSize: 12),
+        SizedBox(
+          child: Text(
+            titleText!,
+            style: const TextStyle(fontSize: 12),
+          ),
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Text(
-              editableText!,
-              style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+            SizedBox(
+              width: 90,
+              child: Text(
+                editableText!,
+                overflow: TextOverflow.clip,
+                style:
+                    const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+              ),
             ),
           ],
         ),

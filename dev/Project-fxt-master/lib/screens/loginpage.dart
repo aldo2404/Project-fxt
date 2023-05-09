@@ -232,7 +232,6 @@ class _LoginPageState extends State<LoginPage> {
 
       print("data error_${data.error}");
       if (data.error != null) {
-        print('${data.error}');
         ReuseAlertDialogBox().alertDialog(context, "Alert", data.error!);
       } else {
         Navigator.of(context).pushReplacement(

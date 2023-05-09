@@ -30,7 +30,7 @@ class DashBoardService {
     } else {
       print(response.statusCode);
     }
-    print("response in dashboardservice: $response");
+
     return DashBoardResponesModel.fromJson(response.data);
   }
 }
