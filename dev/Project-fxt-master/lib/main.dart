@@ -12,8 +12,8 @@ void main() async {
   await Hive.initFlutter();
 
   WidgetsFlutterBinding.ensureInitialized();
-  final cameras = await availableCameras();
-  final firstCamera = cameras.first;
+  // final cameras = await availableCameras();
+  // final firstCamera = cameras.first;
 
   runApp(const MyApp());
 }

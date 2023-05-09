@@ -11,7 +11,7 @@ class ReuseTextFields extends StatefulWidget {
   bool? readOnly;
   bool autocorrect;
   bool? showCursor;
-  int maxLines;
+  int? maxLines;
   int? minLines;
   TextEditingController? controller;
   final FormFieldValidator? validate;
@@ -33,7 +33,7 @@ class ReuseTextFields extends StatefulWidget {
     this.controller,
     this.password,
     this.autocorrect = false,
-    required this.maxLines,
+    this.maxLines,
     this.minLines,
     this.validate,
     this.readOnly,
@@ -83,7 +83,7 @@ class ReuseTextFieldsState extends State<ReuseTextFields> {
               style: BorderStyle.solid,
             ),
           ),
-          contentPadding: const EdgeInsets.only(bottom: 8, top: 8, left: 10),
+          contentPadding: const EdgeInsets.only(bottom: 10, top: 10, left: 10),
           helperText: widget.helperText,
           hintTextDirection: TextDirection.ltr,
           labelText: widget.labelText,
